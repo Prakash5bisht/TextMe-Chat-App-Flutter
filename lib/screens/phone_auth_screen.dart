@@ -1,8 +1,10 @@
+import 'package:flutter/services.dart';
 import 'package:test_app/screens/chat_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:test_app/screens/country_picker_screen.dart';
+import 'package:test_app/services/country_assets.dart';
 
 class PhoneAuthentication extends StatefulWidget {
   static const String id = 'phone_auth_screen';
@@ -20,6 +22,21 @@ class _PhoneAuthenticationState extends State<PhoneAuthentication> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final phoneNumController = TextEditingController();
   final dialCodeController = TextEditingController();
+  FocusNode phoneField = FocusNode();
+  List<String> availableCountryCode = [];
+
+
+  void initState(){
+    Country country = Country();
+    int length = country.countries.length;
+
+    while(length-- >0) {
+      for (var countryCode in country.countries) {
+        availableCountryCode.add(countryCode["code"]);
+      }
+    }
+    super.initState();
+  }
 
   Future<void> _verifyPhoneNumber(BuildContext context) async{
 
@@ -33,7 +50,7 @@ class _PhoneAuthenticationState extends State<PhoneAuthentication> {
     try {
       await _auth.verifyPhoneNumber(
 
-          phoneNumber: dialCode + '' + phoneNo,
+          phoneNumber: '+$dialCode ' + phoneNo,
 
           timeout: Duration(seconds: 30),
 
@@ -154,20 +171,36 @@ class _PhoneAuthenticationState extends State<PhoneAuthentication> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 150.0,horizontal: 10.0),
+        padding: EdgeInsets.symmetric(vertical: 100.0,horizontal: 20.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Row(
               children: <Widget>[
                 Expanded(
-                  flex: 2,
+                  child: Text(
+                      '+',
+                      style: TextStyle(fontSize: 15.0,textBaseline: TextBaseline.alphabetic)
+                      ,textAlign: TextAlign.end,
+                    ),
+                ),
+                Expanded(
+                  flex: 3,
                   child: TextField(
                     controller: dialCodeController,
+                    keyboardType: TextInputType.phone,
+                    inputFormatters: [LengthLimitingTextInputFormatter(3)],//this makes max  length of dialCode  3
+                    style: TextStyle(height: 1.5),
+                    textAlign: TextAlign.center,
                     onChanged: (value){
                       dialCode = value;
                     },
-                    textAlign: TextAlign.center,
+                    onEditingComplete: (){
+                      availableCountryCode.contains(dialCode) ? FocusScope.of(context).requestFocus(phoneField) : _showAlert('Invalid coutry code'); // if country code is valid then on pressing done in keyboard it will pass the cursor to phone field else show alert dialog
+                    },
+                    autofocus: true,
                   ),
                 ),
                 Expanded(
@@ -179,28 +212,33 @@ class _PhoneAuthenticationState extends State<PhoneAuthentication> {
                    },
                   ),
                 ),
-                SizedBox(width: 5.0,),
+                SizedBox(width: 30.0,),
                 Expanded(
                   flex: 7,
                   child: TextField(
                     controller: phoneNumController,
+                    focusNode: phoneField,
+                    style: TextStyle(height: 1.5),
                     onChanged: (value){
                       phoneNo = value;
                     },
                     decoration: InputDecoration(
-                      labelText: 'Phone Number',
-                      border: OutlineInputBorder(),
+                      hintText: 'Phone Number',
                     ),
                     keyboardType: TextInputType.phone,
+                    autofocus: true,
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ],
             ),
-            FlatButton(
+            RaisedButton(
               child: Text('Send OTP'),
+              color: Colors.blue,
+              textColor: Colors.white,
               onPressed: () {
                 try{
-                  phoneNo.length == 0 ? _showAlert('Please enter your phone number') :  _verifyPhoneNumber(context);
+                  phoneNo.length == 0 ? _showAlert('Please enter your phone number') : dialCode.length == 0 ? _showAlert('Invalid country code length') : _verifyPhoneNumber(context);
                 }catch(e){
                   print(e);
                 }
