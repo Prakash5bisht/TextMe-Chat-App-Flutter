@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:test_app/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:test_app/services/date_and_time.dart';
@@ -42,17 +43,22 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: null,
+        elevation: 2.0,
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.close),
+              icon: Icon(Icons.search),
+              color: Colors.black,
+              iconSize: 30.0,
               onPressed: () {
                 _auth.signOut();
                 Navigator.pop(context);
               }),
         ],
         // title: Text('⚡️Chat'),
-        backgroundColor: Colors.teal,
+        backgroundColor: Colors.white,
       ),
       body: SafeArea(
         child: Column(
@@ -76,14 +82,15 @@ class _ChatScreenState extends State<ChatScreen> {
                             borderRadius: BorderRadius.circular(35.0),
                             boxShadow: [
                               BoxShadow(
-                                offset: Offset(0, 3),
-                                blurRadius: 5,
+                                offset: Offset(0, 1),
+                                blurRadius: 2,
                                 color: Colors.grey,
                               )
                             ]
                         ),
                         child: TextField(
                           controller: textController,
+                          style: TextStyle(fontSize: 18.0),
                           onChanged: (value) {
                             textMessage = value;
                           },
@@ -100,7 +107,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       child: MaterialButton(
                           height: 47.0,
                           shape: CircleBorder(),
-                          color: Colors.teal,
+                          color: Colors.blueAccent,
                           elevation: 5,
                           onPressed: () {
                             textController.clear();
@@ -109,6 +116,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               'sender': loggedInUser.email,
                               'timestamp': new DateTime.now().toUtc(),
                             });
+                            textMessage = '';
                           },
                           child: Icon(
                             Icons.send,
@@ -136,7 +144,7 @@ class ChatBuilder extends StatelessWidget {
         if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(
-              backgroundColor: Colors.green,
+              backgroundColor: Colors.blueAccent,
             ),
           );
         }
@@ -186,25 +194,29 @@ class MessageBubble extends StatelessWidget {
             Text(
               isMe ? 'You' : sender,
               style: TextStyle(
-                color: Colors.black54,
+                color: Color(0xff999999),
               ),
             ),
             Material(
-              elevation: 4.0,
+              elevation: 1.0,
+              borderOnForeground: true,
+              color: isMe ? Colors.blue[500] : Color(0xfff5f6f9),
+              shadowColor: isMe ? Colors.blue[200] : Colors.grey[100],
               borderRadius: BorderRadius.only(
-                topLeft: isMe ? Radius.circular(20.0) : Radius.circular(0.0),
-                topRight: Radius.circular(18.0),
-                bottomLeft: Radius.circular(20.0),
-                bottomRight: isMe ? Radius.circular(0.0) : Radius.circular(18.0),
+                topLeft: isMe ? Radius.circular(8.0) : Radius.circular(0.0),
+                topRight: Radius.circular(8.0),
+                bottomLeft: Radius.circular(8.0),
+                bottomRight: isMe ? Radius.circular(0.0) : Radius.circular(8.0),
               ),
-              color: isMe ? Colors.teal[400] : Colors.white,
+
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                 child: Text(
                   text,
                   style: TextStyle(
-                    fontSize: 16.0,
-                    color: isMe ? Colors.white : Color(0xff4d4d4d),
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w500,
+                    color: isMe ? Colors.white : Color(0xff474563),
                   ),
                 ),
               ),
@@ -213,7 +225,7 @@ class MessageBubble extends StatelessWidget {
             Text(
               DateAndTime().getDateAndTime(time),
               style: TextStyle(
-                  color: Colors.black54,
+                  color: Color(0xff999999),
                   fontWeight: FontWeight.w700,
                   fontSize: 10.0
               ),
@@ -222,4 +234,3 @@ class MessageBubble extends StatelessWidget {
     );
   }
 }
-// 03:61:EE:AC:D5:A6:28:7F:D0:EA:8C:B2:23:65:59:0A:4A:26:D1:A9
