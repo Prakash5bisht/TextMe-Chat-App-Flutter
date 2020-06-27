@@ -2,29 +2,43 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:test_app/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:test_app/models/custom_appbar.dart';
 import 'package:test_app/services/date_and_time.dart';
 
 FirebaseUser loggedInUser;
 final Firestore _firestore = Firestore.instance;
+bool isPressed = false;
+
 
 class ChatScreen extends StatefulWidget {
+
   static const String id = 'chat_screen';
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String textMessage = '';
   final textController = TextEditingController();
 
+ // Widget currentAppBar = AppBar(backgroundColor: Colors.white,);
+//  Widget newAppBar = AppBar(backgroundColor: Colors.blue,);
+
+
   @override
   void initState() {
-    getCurrentUser();
     super.initState();
+    getCurrentUser();
+
   }
+
 
   void getCurrentUser() async {
     try {
@@ -37,28 +51,31 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 2.0,
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        ),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.search),
-              color: Colors.black,
-              iconSize: 30.0,
-              onPressed: () {
-                _auth.signOut();
-                Navigator.pop(context);
-              }),
-        ],
-        // title: Text('⚡️Chat'),
-        backgroundColor: Colors.white,
-      ),
+        appBar: Provider.of<CustomAppBar>(context).appBar(),
+//      appBar: AppBar(
+//        elevation: 2.0,
+//        iconTheme: IconThemeData(
+//          color: Colors.black,
+//        ),
+//        actions: <Widget>[
+//          IconButton(
+//              icon: Icon(Icons.search),
+//              color: Colors.black,
+//              iconSize: 30.0,
+//              onPressed: () {
+//                _auth.signOut();
+//                Navigator.pop(context);
+//              }),
+//        ],
+//        // title: Text('⚡️Chat'),
+//        backgroundColor: Colors.white,
+//      ),
+
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,6 +148,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
+
 }
 
 class ChatBuilder extends StatelessWidget {
@@ -162,7 +180,7 @@ class ChatBuilder extends StatelessWidget {
             sender: messageSender,
             isMe: currentUser == messageSender,
             time: time.toDate(),
-            id: message.documentID, // added id to implement ability to delete a chat by accessing it documentId which is unique for each chat
+            id: message.documentID, // added it to implement ability to delete a chat by accessing it documentId which is unique for each chat
           );
           messageBubbles.add(messageBubble);
         }
@@ -177,6 +195,7 @@ class ChatBuilder extends StatelessWidget {
   }
 }
 
+
 class MessageBubble extends StatelessWidget {
   MessageBubble({this.text, this.sender, this.isMe, this.time, this.id});
   final String text;
@@ -184,13 +203,14 @@ class MessageBubble extends StatelessWidget {
   final bool isMe;
   final time;
   final id;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
       child: Column(
           crossAxisAlignment:
-              isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: <Widget>[
             Text(
               isMe ? 'You' : sender,
@@ -199,9 +219,12 @@ class MessageBubble extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onLongPress: () {
-                //options(context);
-                options(context);
+             onLongPress: (){
+               //options(context);
+                Provider.of<CustomAppBar>(context,listen: false).changeAppBar();
+              },
+              onTap: (){
+               Provider.of<CustomAppBar>(context,listen: false).changeAppBar();
               },
               child: Material(
                 elevation: 1.0,
@@ -213,11 +236,11 @@ class MessageBubble extends StatelessWidget {
                   topRight: Radius.circular(8.0),
                   bottomLeft: Radius.circular(8.0),
                   bottomRight:
-                      isMe ? Radius.circular(0.0) : Radius.circular(8.0),
+                  isMe ? Radius.circular(0.0) : Radius.circular(8.0),
                 ),
                 child: Padding(
                   padding:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                   child: Text(
                     text,
                     style: TextStyle(
@@ -285,6 +308,4 @@ class MessageBubble extends StatelessWidget {
         });
   }
 }
-
-
 
