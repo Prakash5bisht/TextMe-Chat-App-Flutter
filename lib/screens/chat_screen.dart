@@ -28,9 +28,6 @@ class _ChatScreenState extends State<ChatScreen> {
   String textMessage = '';
   final textController = TextEditingController();
 
- // Widget currentAppBar = AppBar(backgroundColor: Colors.white,);
-//  Widget newAppBar = AppBar(backgroundColor: Colors.blue,);
-
 
   @override
   void initState() {
