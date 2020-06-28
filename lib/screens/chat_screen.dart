@@ -33,6 +33,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     getCurrentUser();
+    Provider.of<CustomAppBar>(context,listen: false).context = context;
 
   }
 
@@ -203,63 +204,78 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-      child: Column(
-          crossAxisAlignment:
-          isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              isMe ? 'You' : sender,
-              style: TextStyle(
-                color: Color(0xff999999),
-              ),
-            ),
-            GestureDetector(
-             onLongPress: (){
-               //options(context);
-                Provider.of<CustomAppBar>(context,listen: false).changeAppBar();
-              },
-              onTap: (){
-               Provider.of<CustomAppBar>(context,listen: false).changeAppBar();
-              },
-              child: Material(
-                elevation: 1.0,
-                borderOnForeground: true,
-                color: isMe ? Colors.blue[500] : Color(0xfff5f6f9),
-                shadowColor: isMe ? Colors.blue[200] : Colors.grey[100],
-                borderRadius: BorderRadius.only(
-                  topLeft: isMe ? Radius.circular(8.0) : Radius.circular(0.0),
-                  topRight: Radius.circular(8.0),
-                  bottomLeft: Radius.circular(8.0),
-                  bottomRight:
-                  isMe ? Radius.circular(0.0) : Radius.circular(8.0),
+    bool longPressed = false;
+    return InkWell(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+        child: Column(
+            crossAxisAlignment:
+            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                isMe ? 'You' : sender,
+                style: TextStyle(
+                  color: Color(0xff999999),
                 ),
-                child: Padding(
-                  padding:
-                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                  child: Text(
-                    text,
-                    style: TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.w500,
-                      color: isMe ? Colors.white : Color(0xff474563),
+              ),
+              Stack(
+                children: <Widget>[
+                  GestureDetector(
+                    onLongPress: (){
+                      // options(context);
+                      longPressed = true;
+                      Provider.of<CustomAppBar>(context,listen: false).messages.add(id);
+                      Provider.of<CustomAppBar>(context,listen: false).changeAppBar();
+                    },
+                    onTap: (){
+                      longPressed ? Provider.of<CustomAppBar>(context,listen: false).changeAppBar() : null;
+                      Provider.of<CustomAppBar>(context,listen: false).messages.add(id);
+                    },
+                    child: Material(
+                      elevation: 1.0,
+                      borderOnForeground: true,
+                      color: isMe ? Colors.blue[500] : Color(0xfff5f6f9),
+                      shadowColor: isMe ? Colors.blue[200] : Colors.grey[100],
+                      borderRadius: BorderRadius.only(
+                        topLeft: isMe ? Radius.circular(8.0) : Radius.circular(0.0),
+                        topRight: Radius.circular(8.0),
+                        bottomLeft: Radius.circular(8.0),
+                        bottomRight:
+                        isMe ? Radius.circular(0.0) : Radius.circular(8.0),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                        child: Text(
+                          text,
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w500,
+                            color: isMe ? Colors.white : Color(0xff474563),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+//                  isPressed ? Align(
+//                    alignment: Alignment.bottomRight,
+//                    child: Icon(
+//                      Icons.check_circle,
+//                    ),
+//                  ) : Container(),
+                ],
               ),
-            ),
-            SizedBox(
-              height: 4.0,
-            ),
-            Text(
-              DateAndTime().getDateAndTime(time),
-              style: TextStyle(
-                  color: Color(0xff999999),
-                  fontWeight: FontWeight.w700,
-                  fontSize: 10.0),
-            ),
-          ]),
+              SizedBox(
+                height: 4.0,
+              ),
+              Text(
+                DateAndTime().getDateAndTime(time),
+                style: TextStyle(
+                    color: Color(0xff999999),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 10.0),
+              ),
+            ]),
+      ),
     );
   }
 
