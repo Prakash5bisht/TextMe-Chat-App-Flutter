@@ -55,25 +55,6 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
         appBar: Provider.of<CustomAppBar>(context).appBar(),
-//      appBar: AppBar(
-//        elevation: 2.0,
-//        iconTheme: IconThemeData(
-//          color: Colors.black,
-//        ),
-//        actions: <Widget>[
-//          IconButton(
-//              icon: Icon(Icons.search),
-//              color: Colors.black,
-//              iconSize: 30.0,
-//              onPressed: () {
-//                _auth.signOut();
-//                Navigator.pop(context);
-//              }),
-//        ],
-//        // title: Text('⚡️Chat'),
-//        backgroundColor: Colors.white,
-//      ),
-
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -208,7 +189,8 @@ class MessageBubble extends StatelessWidget {
     return InkWell(
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-        child: Column(
+        child:
+        Column(
             crossAxisAlignment:
             isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: <Widget>[
@@ -218,12 +200,10 @@ class MessageBubble extends StatelessWidget {
                   color: Color(0xff999999),
                 ),
               ),
-              Stack(
-                children: <Widget>[
-                  GestureDetector(
+              GestureDetector(
                     onLongPress: (){
-                      // options(context);
                       longPressed = true;
+                      isPressed = true;
                       Provider.of<CustomAppBar>(context,listen: false).messages.add(id);
                       Provider.of<CustomAppBar>(context,listen: false).changeAppBar();
                     },
@@ -232,10 +212,9 @@ class MessageBubble extends StatelessWidget {
                       Provider.of<CustomAppBar>(context,listen: false).messages.add(id);
                     },
                     child: Material(
-                      elevation: 1.0,
-                      borderOnForeground: true,
-                      color: isMe ? Colors.blue[500] : Color(0xfff5f6f9),
-                      shadowColor: isMe ? Colors.blue[200] : Colors.grey[100],
+                      elevation: 2.0,
+                      color: isMe ? Colors.green[50] : Color(0xffe6ecff) , //isPressed ? Colors.black.withOpacity(0) :
+                      shadowColor: Color(0xfff4f4f7),
                       borderRadius: BorderRadius.only(
                         topLeft: isMe ? Radius.circular(8.0) : Radius.circular(0.0),
                         topRight: Radius.circular(8.0),
@@ -249,21 +228,12 @@ class MessageBubble extends StatelessWidget {
                           text,
                           style: TextStyle(
                             fontSize: 15.0,
-                            fontWeight: FontWeight.w500,
-                            color: isMe ? Colors.white : Color(0xff474563),
+                            color: isMe ?  Colors.green[300] : Colors.blue
                           ),
                         ),
                       ),
                     ),
                   ),
-//                  isPressed ? Align(
-//                    alignment: Alignment.bottomRight,
-//                    child: Icon(
-//                      Icons.check_circle,
-//                    ),
-//                  ) : Container(),
-                ],
-              ),
               SizedBox(
                 height: 4.0,
               ),
@@ -279,46 +249,5 @@ class MessageBubble extends StatelessWidget {
     );
   }
 
-  void options(context) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Expanded(
-                  child: Icon(Icons.share,color: Colors.blue,),
-                ),
-                Expanded(
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.delete_outline,
-                      color: Colors.redAccent,
-                    ),
-                    onPressed: () {
-                      _firestore.collection('message').document(id).delete(); //deleting the chat(document) on the basis of its documentId
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ),
-                Expanded(
-                  child: Icon(Icons.forward,color: Colors.grey),
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Cancel'),
-                textColor: Colors.blue,
-                onPressed: (){
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        });
-  }
 }
 

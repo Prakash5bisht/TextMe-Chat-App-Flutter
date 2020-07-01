@@ -24,6 +24,7 @@ String id;
  Widget chatOptionAppBar() {
     return AppBar(
       backgroundColor: Colors.blue,
+      title:  Text('${messages.length}'),
       actions: <Widget>[
 //        IconButton(
 //          icon: Icon(Icons.forward),
@@ -63,12 +64,14 @@ String id;
  }
 
   void showDeleteAlert(context) {
+
+    String text = messages.length > 1 ? 'messages' : 'message';
     showDialog(
       context: context,
       builder: (BuildContext context){
         return AlertDialog(
-          title: Text('Delete ${messages.length} messages?'),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+          title: Text('Delete ${messages.length} $text'),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3.0)),
           content: Row(
             children: <Widget>[
               Icon(Icons.check_box,color: Colors.blue,),
@@ -89,7 +92,6 @@ String id;
               child: Text('DELETE'),
               onPressed: (){
                 Navigator.pop(context);
-                print(messages);
                 for(int i = 0; i<messages.length; i++){
                   _firestore.collection('message').document(messages.elementAt(i)).delete();
                 }
