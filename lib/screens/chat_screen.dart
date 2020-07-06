@@ -74,12 +74,12 @@ class _ChatScreenState extends State<ChatScreen> {
                           EdgeInsets.symmetric(vertical: 2.0, horizontal: 10.0),
                       child: Container(
                         decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Colors.grey[50],
                             borderRadius: BorderRadius.circular(35.0),
                             boxShadow: [
                               BoxShadow(
-                                offset: Offset(0, 1),
-                                blurRadius: 2,
+//                                offset: Offset(0, 1),
+                                blurRadius: 0,
                                 color: Colors.grey,
                               )
                             ]),
@@ -191,28 +191,27 @@ class MessageBubble extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
         child:
         Column(
-            crossAxisAlignment:
-            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                isMe ? 'You' : sender,
-                style: TextStyle(
-                  color: Color(0xff999999),
-                ),
-              ),
+//              Text(
+//                isMe ? 'You' : sender,
+//                style: TextStyle(
+//                  color: Color(0xff999999),
+//                ),
+//              ),
               GestureDetector(
                     onLongPress: (){
                       longPressed = true;
                       isPressed = true;
-                      Provider.of<CustomAppBar>(context,listen: false).messages.add(id);
+                      Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
                       Provider.of<CustomAppBar>(context,listen: false).changeAppBar();
                     },
                     onTap: (){
                       longPressed ? Provider.of<CustomAppBar>(context,listen: false).changeAppBar() : null;
-                      Provider.of<CustomAppBar>(context,listen: false).messages.add(id);
+                      Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
                     },
                     child: Material(
-                      elevation: 2.0,
+                      elevation: 0.3,
                       color: isMe ? Colors.green[50] : Color(0xffe6ecff) , //isPressed ? Colors.black.withOpacity(0) :
                       shadowColor: Color(0xfff4f4f7),
                       borderRadius: BorderRadius.only(

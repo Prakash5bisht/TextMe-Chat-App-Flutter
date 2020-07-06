@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -21,10 +22,24 @@ String id;
     notifyListeners();
    }
 
+   void selectedMessages(String messageId){
+    messages.add(messageId);
+   }
+
  Widget chatOptionAppBar() {
     return AppBar(
       backgroundColor: Colors.blue,
-      title:  Text('${messages.length}'),
+     shape: RoundedRectangleBorder(
+       borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.0), bottomRight: Radius.circular(15.0)),
+     ),
+     // elevation: 0,
+      leading: IconButton(
+        icon: Icon(Icons.clear,),
+        onPressed: (){
+          changeAppBar();
+          messages.clear();
+        },
+      ),
       actions: <Widget>[
 //        IconButton(
 //          icon: Icon(Icons.forward),
@@ -47,15 +62,19 @@ String id;
 
  Widget defaultAppBar() {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue,
+//      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.0), bottomRight: Radius.circular(15.0)),
+      ),
       iconTheme: IconThemeData(
-          color: Colors.black54
+          color: Colors.white
       ),
       actions: <Widget>[
         IconButton(
             icon: Icon(Icons.search),
-            color: Colors.black,
-            iconSize: 30.0,
+            color: Colors.white,
+            iconSize: 25.0,
             onPressed: () {
 //                _auth.signOut();
 //                Navigator.pop(context);

@@ -118,8 +118,8 @@ class _CountryPickerState extends State<CountryPicker> {
       ],
       elevation: 2.0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(20.0),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(20.0), bottomRight: Radius.circular(20.0),
         ),
       ),
     );
