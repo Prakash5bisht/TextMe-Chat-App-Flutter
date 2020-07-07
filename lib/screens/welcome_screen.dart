@@ -1,6 +1,5 @@
 import 'package:test_app/screens/phone_auth_screen.dart';
 import 'package:test_app/screens/login_screen.dart';
-import 'package:test_app/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/components/round_button.dart';
 

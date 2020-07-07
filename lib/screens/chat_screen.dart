@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,11 +10,13 @@ import 'package:test_app/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:test_app/models/custom_appbar.dart';
 import 'package:test_app/services/date_and_time.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as Path;
 
 FirebaseUser loggedInUser;
 final Firestore _firestore = Firestore.instance;
 bool isPressed = false;
-
+String uploadedFileUrl;
 
 class ChatScreen extends StatefulWidget {
 
@@ -25,8 +30,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  String textMessage = '';
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  var textMessage = '';
   final textController = TextEditingController();
+
+  File _imageFile;
 
 
   @override
@@ -67,6 +76,31 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: IconButton(
+                        icon: Icon(
+                          Icons.add_circle,
+                          color: Colors.blue,
+                          size: 43.0,
+                        ),
+                        onPressed: () async{
+                            await ImagePicker().getImage(source: ImageSource.gallery).then((image){
+                              setState(() {
+                                _imageFile = File(image.path);
+                              });
+                            });
+                         StorageReference  storageReference =  _storage.ref().child('chatMedia/').child(Path.basename(_imageFile.path));
+                          StorageUploadTask uploadTask =  storageReference.putFile(_imageFile);
+                          await uploadTask.onComplete;
+                          storageReference.getDownloadURL().then((fileUrl){
+                            setState(() {
+                              uploadedFileUrl = fileUrl;
+                            });
+                          });
+                        }
+                    ),
+                  ),
                   Expanded(
                     flex: 5,
                     child: Padding(
@@ -98,9 +132,9 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.only(right: 10.0),
+                      padding: EdgeInsets.only(right: 3.0),
                       child: MaterialButton(
-                          height: 47.0,
+                          height: 45.0,
                           shape: CircleBorder(),
                           color: Colors.blueAccent,
                           elevation: 5,
@@ -223,7 +257,7 @@ class MessageBubble extends StatelessWidget {
                       ),
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                        child: Text(
+                        child:  Text(
                           text,
                           style: TextStyle(
                             fontSize: 15.0,
