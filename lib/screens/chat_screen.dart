@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:test_app/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:test_app/models/custom_appbar.dart';
+import 'package:test_app/screens/show_media_screen.dart';
 import 'package:test_app/services/date_and_time.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
@@ -95,11 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           StorageUploadTask uploadTask =  storageReference.putFile(_imageFile);
                           await uploadTask.onComplete;
                           uploadedFileUrl = await storageReference.getDownloadURL();
-//                          storageReference.getDownloadURL().then((fileUrl){
-//                            setState(() {
-//                              uploadedFileUrl = fileUrl;
-//                            });
-//                          });
+
                         _firestore.collection('message').add({
                           'text': textMessage,
                           'sender': loggedInUser.email,
@@ -158,7 +155,8 @@ class _ChatScreenState extends State<ChatScreen> {
                           child: Icon(
                             Icons.send,
                             color: Colors.white,
-                          )),
+                          ),
+                      ),
                     ),
                   ),
                 ],
@@ -254,10 +252,16 @@ class MessageBubble extends StatelessWidget {
                     onTap: (){
                       longPressed ? Provider.of<CustomAppBar>(context,listen: false).changeAppBar() : null;
                       Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
+                      mediaUrl != null ? Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context)=> ShowMediaScreen(
+                       mediaLink: mediaUrl,
+                      ))) :
+                          null;
                     },
                     child: Material(
                       elevation: 1.5,
-                      color: isMe ? Colors.green[50] : Color(0xffe6ecff) , //isPressed ? Colors.black.withOpacity(0) :
+                      color: isMe ? Colors.green[50] : Color(0xffe6ecff) ,
                       shadowColor: Color(0xfff4f4f7),
                       borderRadius: BorderRadius.only(
                         topLeft: isMe ? Radius.circular(8.0) : Radius.circular(0.0),
