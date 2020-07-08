@@ -12,6 +12,7 @@ import 'package:test_app/models/custom_appbar.dart';
 import 'package:test_app/services/date_and_time.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
+import 'package:cached_network_image/cached_network_image.dart';
 
 FirebaseUser loggedInUser;
 final Firestore _firestore = Firestore.instance;
@@ -93,11 +94,18 @@ class _ChatScreenState extends State<ChatScreen> {
                          StorageReference  storageReference =  _storage.ref().child('chatMedia/').child(Path.basename(_imageFile.path));
                           StorageUploadTask uploadTask =  storageReference.putFile(_imageFile);
                           await uploadTask.onComplete;
-                          storageReference.getDownloadURL().then((fileUrl){
-                            setState(() {
-                              uploadedFileUrl = fileUrl;
-                            });
-                          });
+                          uploadedFileUrl = await storageReference.getDownloadURL();
+//                          storageReference.getDownloadURL().then((fileUrl){
+//                            setState(() {
+//                              uploadedFileUrl = fileUrl;
+//                            });
+//                          });
+                        _firestore.collection('message').add({
+                          'text': textMessage,
+                          'sender': loggedInUser.email,
+                          'timestamp': new DateTime.now().toUtc(),
+                          'mediaUrl' : uploadedFileUrl,
+                        });
                         }
                     ),
                   ),
@@ -186,6 +194,7 @@ class ChatBuilder extends StatelessWidget {
           final messageText = message.data['text'];
           final messageSender = message.data['sender'];
           final time = message.data['timestamp'];
+          final media = message.data['mediaUrl'];
 
           final currentUser = loggedInUser.email;
           final messageBubble = MessageBubble(
@@ -194,6 +203,7 @@ class ChatBuilder extends StatelessWidget {
             isMe: currentUser == messageSender,
             time: time.toDate(),
             id: message.documentID, // added it to implement ability to delete a chat by accessing it documentId which is unique for each chat
+            mediaUrl: media,
           );
           messageBubbles.add(messageBubble);
         }
@@ -210,12 +220,13 @@ class ChatBuilder extends StatelessWidget {
 
 
 class MessageBubble extends StatelessWidget {
-  MessageBubble({this.text, this.sender, this.isMe, this.time, this.id});
+  MessageBubble({this.text, this.sender, this.isMe, this.time, this.id, this.mediaUrl});
   final String text;
   final String sender;
   final bool isMe;
   final time;
   final id;
+  final String mediaUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -245,7 +256,7 @@ class MessageBubble extends StatelessWidget {
                       Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
                     },
                     child: Material(
-                      elevation: 0.3,
+                      elevation: 1.5,
                       color: isMe ? Colors.green[50] : Color(0xffe6ecff) , //isPressed ? Colors.black.withOpacity(0) :
                       shadowColor: Color(0xfff4f4f7),
                       borderRadius: BorderRadius.only(
@@ -255,13 +266,39 @@ class MessageBubble extends StatelessWidget {
                         bottomRight:
                         isMe ? Radius.circular(0.0) : Radius.circular(8.0),
                       ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                        child:  Text(
+                      child:Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                        child: mediaUrl != null ? Column(
+                            children: <Widget>[
+                             Image.network(
+                               mediaUrl,
+                               fit: BoxFit.fill,
+                               width: 220.0,
+                               height: 250.0,
+                               loadingBuilder: (context,child,loadingProgress){
+                                 if(loadingProgress == null) return child;
+                                 return CircularProgressIndicator(
+                                   backgroundColor: isMe ? Colors.green : Colors.blue,
+                                   value: loadingProgress.expectedTotalBytes != null
+                                       ? loadingProgress.cumulativeBytesLoaded /
+                                       loadingProgress.expectedTotalBytes
+                                       : null,
+                                 );
+                               },
+                             ),
+                              Text(
+                                text,
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: isMe ?  Colors.green[300] : Colors.blue
+                                ),
+                              ),
+                            ],
+                          ) : Text(
                           text,
                           style: TextStyle(
-                            fontSize: 15.0,
-                            color: isMe ?  Colors.green[300] : Colors.blue
+                              fontSize: 15.0,
+                              color: isMe ?  Colors.green[300] : Colors.blue
                           ),
                         ),
                       ),
