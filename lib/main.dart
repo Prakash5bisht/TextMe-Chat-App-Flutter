@@ -4,7 +4,6 @@ import 'package:test_app/models/custom_appbar.dart';
 import 'package:test_app/screens/country_picker_screen.dart';
 import 'package:test_app/screens/phone_auth_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:test_app/screens/show_media_screen.dart';
 import 'package:test_app/screens/welcome_screen.dart';
 import 'package:test_app/screens/login_screen.dart';
 import 'package:test_app/screens/registration_screen.dart';
@@ -28,6 +27,7 @@ class FlashChat extends StatelessWidget {
           ChatScreen.id: (context)=> ChatScreen(),
           PhoneAuthentication.id: (context) => PhoneAuthentication(),
           CountryPicker.id: (context) => CountryPicker(),
+//          MediaPreviewScreen.id: (context) => MediaPreviewScreen(),
         //  ShowMediaScreen.id: (context) => ShowMediaScreen(),
         },
       ),

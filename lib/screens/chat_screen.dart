@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,16 +6,17 @@ import 'package:provider/provider.dart';
 import 'package:test_app/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:test_app/models/custom_appbar.dart';
+import 'package:test_app/screens/media_preview_screen.dart';
 import 'package:test_app/screens/show_media_screen.dart';
 import 'package:test_app/services/date_and_time.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as Path;
-import 'package:cached_network_image/cached_network_image.dart';
+
 
 FirebaseUser loggedInUser;
 final Firestore _firestore = Firestore.instance;
 bool isPressed = false;
 String uploadedFileUrl;
+
 
 class ChatScreen extends StatefulWidget {
 
@@ -32,12 +30,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   var textMessage = '';
   final textController = TextEditingController();
 
-  File _imageFile;
 
 
   @override
@@ -88,21 +84,10 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                         onPressed: () async{
                             await ImagePicker().getImage(source: ImageSource.gallery).then((image){
-                              setState(() {
-                                _imageFile = File(image.path);
-                              });
-                            });
-                         StorageReference  storageReference =  _storage.ref().child('chatMedia/').child(Path.basename(_imageFile.path));
-                          StorageUploadTask uploadTask =  storageReference.putFile(_imageFile);
-                          await uploadTask.onComplete;
-                          uploadedFileUrl = await storageReference.getDownloadURL();
-
-                        _firestore.collection('message').add({
-                          'text': textMessage,
-                          'sender': loggedInUser.email,
-                          'timestamp': new DateTime.now().toUtc(),
-                          'mediaUrl' : uploadedFileUrl,
-                        });
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => MediaPreviewScreen(media: image,)));
+                            }
+                            );
                         }
                     ),
                   ),
@@ -273,7 +258,14 @@ class MessageBubble extends StatelessWidget {
                       child:Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                         child: mediaUrl != null ? Column(
+
                             children: <Widget>[
+//                              isMe ? Image.file(
+//                                _imageFile,
+//                                fit: BoxFit.fill,
+//                                width: 220.0,
+//                                height: 250.0,
+//                              ) :
                              Image.network(
                                mediaUrl,
                                fit: BoxFit.fill,
@@ -290,13 +282,14 @@ class MessageBubble extends StatelessWidget {
                                  );
                                },
                              ),
+                             SizedBox(height: 5.0,),
                               Text(
                                 text,
                                 style: TextStyle(
                                     fontSize: 15.0,
                                     color: isMe ?  Colors.green[300] : Colors.blue
                                 ),
-                              ),
+                              )
                             ],
                           ) : Text(
                           text,
