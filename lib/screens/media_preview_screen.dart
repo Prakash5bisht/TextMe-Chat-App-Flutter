@@ -114,18 +114,25 @@ class _MediaPreviewScreenState extends State<MediaPreviewScreen> {
                       color: Colors.blue,
                        elevation: 5,
                        onPressed: () async{
-                         StorageReference  storageReference =  _storage.ref().child('chatMedia/').child(Path.basename(widget.media.path));
-                         StorageUploadTask uploadTask =  storageReference.putFile(File(widget.media.path));
-                         await uploadTask.onComplete;
-                         uploadedFileUrl = await storageReference.getDownloadURL();
+                        try {
+                          StorageReference storageReference = _storage.ref()
+                              .child('chatMedia/')
+                              .child(Path.basename(widget.media.path));
+                          StorageUploadTask uploadTask = storageReference
+                              .putFile(File(widget.media.path));
+                          await uploadTask.onComplete;
+                          uploadedFileUrl =
+                          await storageReference.getDownloadURL();
 
-                         _firestore.collection('message').add({
-                           'text': message,
-                           'sender': loggedInUser.email,
-                           'timestamp': new DateTime.now().toUtc(),
-                           'mediaUrl' : uploadedFileUrl,
-                         });
-
+                          _firestore.collection('message').add({
+                            'text': message,
+                            'sender': loggedInUser.email,
+                            'timestamp': new DateTime.now().toUtc(),
+                            'mediaUrl': uploadedFileUrl,
+                          });
+                        }catch(e){
+                          print(e);
+                        }
                          message = '';
                          Navigator.pop(context);
                        },
