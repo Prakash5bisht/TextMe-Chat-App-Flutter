@@ -56,7 +56,9 @@ class ShareMediaScreen extends StatelessWidget {
                               child: IconButton(
                                 icon: Icon(Icons.note_add, size: 35.0, color: Colors.deepPurpleAccent[100],),
                                 onPressed: (){
-
+                                   ImagePicker().getVideo(source: ImageSource.gallery).then((video){
+                                     Navigator.push(context, MaterialPageRoute(builder: (context) => MediaPreviewScreen(media: video,) ));
+                                   });
                                 },
                               ),
                             )

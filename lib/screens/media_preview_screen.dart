@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:test_app/constants.dart';
+import 'package:video_player/video_player.dart';
 import 'package:path/path.dart' as Path;
 
 var message = '';
@@ -36,10 +37,13 @@ class _MediaPreviewScreenState extends State<MediaPreviewScreen> {
 
    final textFieldController = TextEditingController();
 
+   VideoPlayerController _controller;
+
    @override
   void initState() {
     super.initState();
     getCurrentUser();
+    _controller =  VideoPlayerController.asset(widget.media.path);
   }
   void getCurrentUser() async{
      try{
@@ -65,11 +69,12 @@ class _MediaPreviewScreenState extends State<MediaPreviewScreen> {
               padding: const EdgeInsets.only(top: 30.0, left: 5.0, right: 5.0),
               child: Container(
                 child: Center(
-                    child: PhotoView(
-                      imageProvider: FileImage(File(widget.media.path)),
-                      minScale: PhotoViewComputedScale.contained * 0.8,
-                      maxScale: 2.0,
-                    ),
+                  child: AspectRatio(aspectRatio: _controller.value.aspectRatio, child: VideoPlayer(_controller),),
+//                    child: PhotoView(
+//                      imageProvider: FileImage(File(widget.media.path)),
+//                      minScale: PhotoViewComputedScale.contained * 0.8,
+//                      maxScale: 2.0,
+//                    ),
                 ),
               ),
             ),
