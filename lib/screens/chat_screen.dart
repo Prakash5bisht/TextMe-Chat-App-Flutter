@@ -6,10 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:test_app/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:test_app/models/custom_appbar.dart';
-import 'package:test_app/screens/media_preview_screen.dart';
+import 'package:test_app/screens/share_media_screen.dart';
 import 'package:test_app/screens/show_media_screen.dart';
 import 'package:test_app/services/date_and_time.dart';
-import 'package:image_picker/image_picker.dart';
 
 
 FirebaseUser loggedInUser;
@@ -60,7 +59,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[50],
         appBar: Provider.of<CustomAppBar>(context).appBar(),
       body: SafeArea(
         child: Column(
@@ -69,27 +68,13 @@ class _ChatScreenState extends State<ChatScreen> {
           children: <Widget>[
             ChatBuilder(),
             Container(
-              //  decoration: kMessageContainerDecoration,
               height: 64.0,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10.0),
-                    child: IconButton(
-                        icon: Icon(
-                          Icons.add_circle,
-                          color: Colors.blue,
-                          size: 43.0,
-                        ),
-                        onPressed: () async{
-                            await ImagePicker().getImage(source: ImageSource.gallery).then((image){
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => MediaPreviewScreen(media: image,)));
-                            }
-                            );
-                        }
-                    ),
+                    child: ShareMediaScreen(),
                   ),
                   Expanded(
                     flex: 5,
@@ -98,7 +83,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           EdgeInsets.symmetric(vertical: 2.0, horizontal: 10.0),
                       child: Container(
                         decoration: BoxDecoration(
-                            color: Colors.grey[50],
+                            color: Colors.grey[100],
                             borderRadius: BorderRadius.circular(35.0),
                             boxShadow: [
                               BoxShadow(
@@ -151,6 +136,10 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+
+   showShareMenu(){
+
   }
 
 }

@@ -124,15 +124,17 @@ class _MediaPreviewScreenState extends State<MediaPreviewScreen> {
                           uploadedFileUrl =
                           await storageReference.getDownloadURL();
 
+                        }catch(e){
+                          print(e);
+                        }
+
                           _firestore.collection('message').add({
                             'text': message,
                             'sender': loggedInUser.email,
                             'timestamp': new DateTime.now().toUtc(),
                             'mediaUrl': uploadedFileUrl,
                           });
-                        }catch(e){
-                          print(e);
-                        }
+
                          message = '';
                          Navigator.pop(context);
                        },
