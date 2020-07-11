@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:test_app/models/custom_appbar.dart';
@@ -14,7 +15,7 @@ void main() => runApp(FlashChat());
 class FlashChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var mySystemTheme = SystemUiOverlayStyle.light.copyWith(systemNavigationBarColor: Colors.black);
+    var mySystemTheme = SystemUiOverlayStyle.light.copyWith(systemNavigationBarColor: Colors.black );
     SystemChrome.setSystemUIOverlayStyle(mySystemTheme);
     return ChangeNotifierProvider(
       create: (context)=> CustomAppBar(),

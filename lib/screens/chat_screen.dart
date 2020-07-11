@@ -138,10 +138,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-   showShareMenu(){
-
-  }
-
 }
 
 class ChatBuilder extends StatelessWidget {
