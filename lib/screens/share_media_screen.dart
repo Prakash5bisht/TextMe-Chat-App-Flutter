@@ -5,16 +5,19 @@ import 'package:test_app/screens/media_preview_screen.dart';
 import 'package:test_app/screens/testing.dart';
 
 class ShareMediaScreen extends StatelessWidget {
+
+
+
   @override
   Widget build(BuildContext context) {
     return  IconButton(
         icon: Icon(
           Icons.add_circle,
-          color: Colors.blue,
+          color: Color(0xffa6a6a6),
           size: 43.0,
         ),
         onPressed: () {
-          showBottomSheet(
+          showModalBottomSheet(
             backgroundColor: Colors.transparent,
               context: context,
               builder: (context){
@@ -28,13 +31,13 @@ class ShareMediaScreen extends StatelessWidget {
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey[200],
-                          blurRadius: 10,
-                          spreadRadius: 3,
+                          blurRadius: 0.2,
+                          spreadRadius: 0.2,
                         )
                       ]
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(bottom: 25.0),
                       child: Row(
                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
@@ -42,7 +45,7 @@ class ShareMediaScreen extends StatelessWidget {
                             children: <Widget>[
                               Expanded(
                                 child: IconButton(
-                                  icon: Icon(Icons.camera, size: 35.0, color: Color(0xff003366),),
+                                  icon: Icon(Icons.camera, size: 35.0, color: Colors.blueGrey,),
                                   onPressed: (){
                                     getMedia(context, ImageSource.camera);
                                   },
@@ -70,7 +73,7 @@ class ShareMediaScreen extends StatelessWidget {
                             children: <Widget>[
                               Expanded(
                                 child: IconButton(
-                                  icon: Icon(Icons.photo, size: 35.0, color: Colors.lightBlue,),
+                                  icon: Icon(Icons.photo, size: 35.0, color: Colors.blue[600],),
                                   onPressed: (){
                                     getMedia(context,ImageSource.gallery);
                                   },
