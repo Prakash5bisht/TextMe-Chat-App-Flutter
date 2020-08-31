@@ -59,82 +59,96 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
-        appBar: Provider.of<CustomAppBar>(context).appBar(),
+      backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Stack(
+////          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+////          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            ChatBuilder(),
-            Container(
-              height: 64.0,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+            Padding(
+              padding: const EdgeInsets.only(top: 52.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: ShareMediaScreen(),
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 2.0, horizontal: 10.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey[100],
-                            borderRadius: BorderRadius.circular(35.0),
-                            boxShadow: [
-                              BoxShadow(
-//                                offset: Offset(0, 1),
-                                blurRadius: 0,
-                                color: Colors.grey,
-                              )
-                            ]),
-                        child: TextField(
-                          controller: textController,
-                          style: TextStyle(fontSize: 18.0),
-                          onChanged: (value) {
-                            textMessage = value;
-                          },
-                          decoration: kMessageTextFieldDecoration,
-                          textCapitalization: TextCapitalization.sentences,
-                          maxLines: null,
+                  ChatBuilder(),
+                  Container(
+                    height: 64.0,
+                    child: Row(
+                      //crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: ShareMediaScreen(),
                         ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 3.0),
-                      child: MaterialButton(
-                          height: 45.0,
-                          shape: CircleBorder(),
-                          color: Colors.blueAccent,
-                          elevation: 5,
-                          onPressed: () {
-                            textController.clear();
-                            _firestore.collection('message').add({
-                              'text': textMessage,
-                              'sender': loggedInUser.email,
-                              'timestamp': new DateTime.now().toUtc(),
-                            });
-                            textMessage = '';
-                          },
-                          child: Icon(
-                            Icons.send,
-                            color: Colors.white,
+                        Expanded(
+                          flex: 5,
+                          child: Padding(
+                            padding:
+                            EdgeInsets.symmetric(vertical: 2.0, horizontal: 10.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(35.0),
+                                  boxShadow: [
+                                    BoxShadow(
+//                                offset: Offset(0, 1),
+                                      blurRadius: 0,
+                                      color: Colors.grey,
+                                    )
+                                  ]),
+                              child: TextField(
+                                controller: textController,
+                                style: TextStyle(fontSize: 18.0),
+                                onChanged: (value) {
+                                  textMessage = value;
+                                },
+                                decoration: kMessageTextFieldDecoration,
+                                textCapitalization: TextCapitalization.sentences,
+                                maxLines: null,
+                              ),
+                            ),
                           ),
-                      ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 3.0),
+                            child: MaterialButton(
+                              height: 45.0,
+                              shape: CircleBorder(),
+                              color: Color(0xff3366ff),
+                              elevation: 5,
+                              onPressed: () {
+                                textController.clear();
+                                _firestore.collection('message').add({
+                                  'text': textMessage,
+                                  'sender': loggedInUser.email,
+                                  'timestamp': new DateTime.now().toUtc(),
+                                });
+                                textMessage = '';
+                              },
+                              child: Icon(
+                                Icons.send,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
+            Positioned(
+                top: -2.0,
+                left: 0.0,
+                right: 0.0,
+                child: Provider.of<CustomAppBar>(context).appBar()
+            )
           ],
         ),
-      ),
+      )
     );
   }
 
@@ -176,9 +190,11 @@ class ChatBuilder extends StatelessWidget {
           messageBubbles.add(messageBubble);
         }
         return Expanded(
-          child: ListView(
-            reverse: true,
-            children: messageBubbles,
+          child: Scrollbar(
+            child: ListView(
+              reverse: true,
+              children: messageBubbles,
+            ),
           ),
         );
       },
@@ -206,12 +222,6 @@ class MessageBubble extends StatelessWidget {
         Column(
             crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: <Widget>[
-//              Text(
-//                isMe ? 'You' : sender,
-//                style: TextStyle(
-//                  color: Color(0xff999999),
-//                ),
-//              ),
               GestureDetector(
                     onLongPress: (){
                       longPressed = true;
@@ -229,61 +239,66 @@ class MessageBubble extends StatelessWidget {
                       ))) :
                           null;
                     },
-                    child: Material(
-                      elevation: 1.5,
-                      color: isMe ? Colors.green[50] : Color(0xffe6ecff) ,
-                      shadowColor: Color(0xfff4f4f7),
-                      borderRadius: BorderRadius.only(
-                        topLeft: isMe ? Radius.circular(8.0) : Radius.circular(0.0),
-                        topRight: Radius.circular(8.0),
-                        bottomLeft: Radius.circular(8.0),
-                        bottomRight:
-                        isMe ? Radius.circular(0.0) : Radius.circular(8.0),
-                      ),
-                      child:Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                        child: mediaUrl != null ? Column(
+                    child: Stack(
+                      children: <Widget>[
+                        Material(
+                          //  elevation: 0.2,
+                          color: isMe ? Colors.grey[100] : Color(0x253366ff) ,//Color(0xffe6ecff)
+                          shadowColor: Color(0xfff4f4f7),
+                          borderRadius: BorderRadius.only(
+                            topLeft: isMe ? Radius.circular(8.0) : Radius.circular(0.0),
+                            topRight: Radius.circular(8.0),
+                            bottomLeft: Radius.circular(8.0),
+                            bottomRight:
+                            isMe ? Radius.circular(0.0) : Radius.circular(8.0),
+                          ),
+                          child:Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                            child: mediaUrl != null ? Column(
 
-                            children: <Widget>[
+                              children: <Widget>[
 //                              isMe ? Image.file(
 //                                _imageFile,
 //                                fit: BoxFit.fill,
 //                                width: 220.0,
 //                                height: 250.0,
 //                              ) :
-                             Image.network(
-                               mediaUrl,
-                               fit: BoxFit.fill,
-                               width: 220.0,
-                               height: 250.0,
-                               loadingBuilder: (context,child,loadingProgress){
-                                 if(loadingProgress == null) return child;
-                                 return CircularProgressIndicator(
-                                   backgroundColor: isMe ? Colors.green : Colors.blue,
-                                   value: loadingProgress.expectedTotalBytes != null
-                                       ? loadingProgress.cumulativeBytesLoaded /
-                                       loadingProgress.expectedTotalBytes
-                                       : null,
-                                 );
-                               },
-                             ),
-                             SizedBox(height: 5.0,),
-                              Text(
-                                text,
-                                style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: isMe ?  Colors.green[300] : Colors.blue
+                                Image.network(
+                                  mediaUrl,
+                                  fit: BoxFit.fill,
+                                  width: 220.0,
+                                  height: 250.0,
+                                  loadingBuilder: (context,child,loadingProgress){
+                                    if(loadingProgress == null) return child;
+                                    return CircularProgressIndicator(
+                                      value: loadingProgress.expectedTotalBytes != null
+                                          ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes
+                                          : null,
+                                    );
+                                  },
                                 ),
-                              )
-                            ],
-                          ) : Text(
-                          text,
-                          style: TextStyle(
-                              fontSize: 15.0,
-                              color: isMe ?  Colors.green[300] : Colors.blue
+                                SizedBox(height: 5.0,),
+                                Text(
+                                  text,
+                                  style: TextStyle(
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.w500,
+                                      color: isMe ?  Colors.black45 : Colors.blue
+                                  ),
+                                )
+                              ],
+                            ) : Text(
+                              text,
+                              style: TextStyle(
+                                  fontSize: 15.0,
+                                  color: isMe ?  Colors.black45 : Colors.blue,
+                                  fontWeight: FontWeight.w500
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
               SizedBox(

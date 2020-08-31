@@ -55,6 +55,6 @@ const kAppBarTextFieldStyle = TextStyle(
 );
 
 const kShareMediaScreenTextStyle = TextStyle(
-  fontWeight: FontWeight.w400,
+  fontWeight: FontWeight.w500,
   color: Color(0xff8c8c8c),
 );

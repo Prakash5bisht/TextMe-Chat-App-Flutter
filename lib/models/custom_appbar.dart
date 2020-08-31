@@ -27,20 +27,22 @@ String id;
    }
 
  Widget chatOptionAppBar() {
-    return AppBar(
-      backgroundColor: Colors.blue,
-     shape: RoundedRectangleBorder(
-       borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.0), bottomRight: Radius.circular(15.0)),
-     ),
-     // elevation: 0,
-      leading: IconButton(
-        icon: Icon(Icons.clear,),
-        onPressed: (){
-          changeAppBar();
-          messages.clear();
-        },
-      ),
-      actions: <Widget>[
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: AppBar(
+        backgroundColor: Color(0xff263238),
+       shape: RoundedRectangleBorder(
+         borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0),bottomLeft: Radius.circular(15.0), bottomRight: Radius.circular(15.0)),
+       ),
+       // elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.clear,),
+          onPressed: (){
+            changeAppBar();
+            messages.clear();
+          },
+        ),
+        actions: <Widget>[
 //        IconButton(
 //          icon: Icon(Icons.forward),
 //        ),
@@ -48,38 +50,42 @@ String id;
 //        IconButton(
 //          icon: Icon(Icons.content_copy),
 //        ),
-        SizedBox(width: 50.0,),
-        IconButton(
-          icon: Icon(Icons.delete),
-          onPressed: (){
-           showDeleteAlert(context);
-          },
-        ),
-        SizedBox(width: 10.0,)
-      ],
+          SizedBox(width: 50.0,),
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: (){
+             showDeleteAlert(context);
+            },
+          ),
+          SizedBox(width: 10.0,)
+        ],
+      ),
     );
   }
 
  Widget defaultAppBar() {
-    return AppBar(
-      backgroundColor: Colors.blue,
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: AppBar(
+        backgroundColor: Color(0xff263238),
 //      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.0), bottomRight: Radius.circular(15.0)),
-      ),
-      iconTheme: IconThemeData(
-          color: Colors.white
-      ),
-      actions: <Widget>[
-        IconButton(
-            icon: Icon(Icons.search),
-            color: Colors.white,
-            iconSize: 25.0,
-            onPressed: () {
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0), bottomLeft: Radius.circular(15.0), bottomRight: Radius.circular(15.0)),
+        ),
+        iconTheme: IconThemeData(
+            color: Colors.white
+        ),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.search),
+              color: Colors.white,
+              iconSize: 25.0,
+              onPressed: () {
 //                _auth.signOut();
 //                Navigator.pop(context);
-            }),
-      ],);
+              }),
+        ],),
+    );
  }
 
   void showDeleteAlert(context) {

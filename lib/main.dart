@@ -29,7 +29,7 @@ class FlashChat extends StatelessWidget {
           PhoneAuthentication.id: (context) => PhoneAuthentication(),
           CountryPicker.id: (context) => CountryPicker(),
 //          MediaPreviewScreen.id: (context) => MediaPreviewScreen(),
-        //  ShowMediaScreen.id: (context) => ShowMediaScreen(),
+          //  ShowMediaScreen.id: (context) => ShowMediaScreen(),
         },
       ),
     );
