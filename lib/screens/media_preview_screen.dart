@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:test_app/constants.dart';
 //import 'package:video_player/video_player.dart';
@@ -77,7 +78,7 @@ class _MediaPreviewScreenState extends State<MediaPreviewScreen> {
                       imageProvider: FileImage(File(widget.media.path)),
                       minScale: PhotoViewComputedScale.contained * 0.8,
                       maxScale: 2.0,
-                    ),
+                    )
 //                child: _controller.value.initialized ?
 //                  AspectRatio(
 //                    aspectRatio: _controller.value.aspectRatio,
@@ -128,6 +129,7 @@ class _MediaPreviewScreenState extends State<MediaPreviewScreen> {
                        elevation: 5,
                        onPressed: () async{
                         try {
+                          writeToLocalFile();
                           StorageReference storageReference = _storage.ref()
                               .child('chatMedia/')
                               .child(Path.basename(widget.media.path));
@@ -163,5 +165,29 @@ class _MediaPreviewScreenState extends State<MediaPreviewScreen> {
         ],
       )
     );
+  }
+
+  Future <String> get _localPath async{
+    final directory = await getApplicationDocumentsDirectory();
+    print(directory.path);
+    return directory.path;
+  }
+
+  Future<File> get _localFile async{
+    final path = await _localPath;
+    return File('$path/TextMe.txt');
+  }
+
+  void writeToLocalFile() async{
+     write();
+     print('done');
+     final file = await _localFile;
+     String contents = await file.readAsString();
+     print(contents);
+  }
+
+  Future<File> write() async {
+    final file = await _localFile;
+    return file.writeAsString('${widget.media.path}');
   }
 }

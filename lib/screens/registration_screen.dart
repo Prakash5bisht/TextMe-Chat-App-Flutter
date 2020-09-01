@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:path_provider/path_provider.dart';
 import 'package:test_app/constants.dart';
 import 'package:test_app/screens/chat_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -67,6 +70,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     email: email, password: password);
                 try {
                   if (newUser != null) {
+                    createAppFolder();
                     Navigator.pushNamed(context, ChatScreen.id);
                   }
                 } catch (e) {
@@ -79,4 +83,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       ),
     );
   }
+
+  Future <String> get _localPath async{
+    final directory = await getApplicationDocumentsDirectory();
+    print(directory.path);
+    return directory.path;
+  }
+
+  Future<File> get _localFile async{
+    final path = await _localPath;
+    return File('$path/TextMe.txt');
+  }
+
+  void createAppFolder() async{
+   final file = await _localFile;
+   file.writeAsString('true');
+   print('done');
+  }
+
 }

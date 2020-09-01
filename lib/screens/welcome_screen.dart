@@ -2,6 +2,7 @@ import 'package:test_app/screens/phone_auth_screen.dart';
 import 'package:test_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/components/round_button.dart';
+import 'package:test_app/screens/registration_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const String id = 'welcome_screen';
@@ -68,7 +69,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 Navigator.pushNamed(context, LoginScreen.id);
               },),
               RoundButton(title: 'Register', colour: Colors.blueAccent, onPressed: (){
-                Navigator.pushNamed(context, PhoneAuthentication.id);
+                Navigator.pushNamed(context, RegistrationScreen.id);
               },
               ),
             ],

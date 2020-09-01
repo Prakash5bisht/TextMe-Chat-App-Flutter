@@ -76,7 +76,11 @@ class ShareMediaScreen extends StatelessWidget {
                                   child: IconButton(
                                     icon: Icon(Icons.photo, size: 35.0, color: Colors.blue[600],),
                                     onPressed: (){
-                                      getMedia(context,ImageSource.gallery);
+                                      try{
+                                        getMedia(context,ImageSource.gallery);
+                                      }catch(e){
+                                        print(e);
+                                      }
                                     },
                                   ),
                                 ),
@@ -142,9 +146,14 @@ class ShareMediaScreen extends StatelessWidget {
 
   void getMedia(context,mediaSource) async{
     await ImagePicker().getImage(source: mediaSource).then((image){
-      Navigator.of(context).pop();
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => MediaPreviewScreen(media: image,)));
+      if(image == null){
+        print('empty selection');
+      }
+      else{
+        Navigator.of(context).pop();
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => MediaPreviewScreen(media: image,)));
+      }
     }
     );
   }
