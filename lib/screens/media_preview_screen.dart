@@ -10,6 +10,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:test_app/constants.dart';
 //import 'package:video_player/video_player.dart';
+import 'package:provider/provider.dart';
+import 'package:test_app/models/custom_appbar.dart';
 import 'package:path/path.dart' as Path;
 
 
@@ -179,15 +181,22 @@ class _MediaPreviewScreenState extends State<MediaPreviewScreen> {
   }
 
   void writeToLocalFile() async{
-     write();
-     print('done');
-     final file = await _localFile;
-     String contents = await file.readAsString();
-     print(contents);
+   // final val =  await write();
+   var image =  print(await write());
+ //  print(Path.basename(image.toString()));
+   //  print('done');
+//     final file = await _localFile;
+//     var contents = await val.readAsString();
+//     print('7');
+//     print(contents);
   }
 
   Future<File> write() async {
-    final file = await _localFile;
-    return file.writeAsString('${widget.media.path}');
+    final directory = await Provider.of<CustomAppBar>(context,listen: false).localFile;
+    print('3');
+    final imglocation = File('$directory${widget.media.path}');
+    print('4');
+   // imglocation.writeAsString('${widget.media.path}');
+    return  imglocation;//File('$directory');
   }
 }

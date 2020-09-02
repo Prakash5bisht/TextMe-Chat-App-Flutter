@@ -147,7 +147,7 @@ class ShareMediaScreen extends StatelessWidget {
   void getMedia(context,mediaSource) async{
     await ImagePicker().getImage(source: mediaSource).then((image){
       if(image == null){
-        print('empty selection');
+        return;
       }
       else{
         Navigator.of(context).pop();

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 final Firestore _firestore = Firestore.instance;
 
@@ -129,5 +131,29 @@ String id;
       }
     );
 
+  }
+
+  Future <String> get _localPath async{
+    final directory = await getExternalStorageDirectory();
+    print(directory.path);
+    return directory.path;
+  }
+
+  Future<String> get localFile async{
+    final path = await _localPath;
+    final myDirectory =  Directory('$path/Media');
+    print('0');
+
+    if(await myDirectory.exists()){
+      print('1');
+      return myDirectory.path;
+    }
+
+    else{
+      final newDirectroy = await myDirectory.create(recursive: false);
+      print('2');
+      return newDirectroy.path;
+    }
+   // return Directory('$path/TextMe/').path;
   }
 }
