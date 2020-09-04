@@ -9,6 +9,7 @@ import 'package:test_app/models/custom_appbar.dart';
 import 'package:test_app/screens/share_media_screen.dart';
 import 'package:test_app/screens/show_media_screen.dart';
 import 'package:test_app/services/date_and_time.dart';
+import 'dart:ui';
 
 
 FirebaseUser loggedInUser;
@@ -143,7 +144,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 top: -2.0,
                 left: 0.0,
                 right: 0.0,
-                child: Provider.of<CustomAppBar>(context).appBar()
+                child: Provider.of<CustomAppBar>(context).defaultAppBar()
             )
           ],
         ),
@@ -217,19 +218,22 @@ class MessageBubble extends StatelessWidget {
     return InkWell(
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-        child: mediaUrl == null ? Column(
-            crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-            children: <Widget>[
-              GestureDetector(
+        child: Column(
+          crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: <Widget>[
+            mediaUrl == null ? Column(
+                crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                children: <Widget>[
+                  GestureDetector(
                     onLongPress: (){
                       longPressed = true;
                       isPressed = true;
                       Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
-                     // Provider.of<CustomAppBar>(context,listen: false).changeAppBar();
+                      // Provider.of<CustomAppBar>(context,listen: false).changeAppBar();
                       Provider.of<CustomAppBar>(context, listen: false).messageOptions(context);
                     },
                     onTap: (){
-                      longPressed ? Provider.of<CustomAppBar>(context,listen: false).changeAppBar() : null;
+                     // longPressed ? Provider.of<CustomAppBar>(context,listen: false).changeAppBar() : null;
                       Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
                     },
                     child: Stack(
@@ -260,90 +264,100 @@ class MessageBubble extends StatelessWidget {
                       ],
                     ),
                   ),
-              SizedBox(
-                height: 4.0,
-              ),
-              Text(
-                DateAndTime().getDateAndTime(time),
-                style: TextStyle(
-                    color: Color(0xff999999),
-                    fontWeight: FontWeight.w700,
-                    fontSize: 10.0),
-              ),
-            ]) : Column(
-          crossAxisAlignment: isMe? CrossAxisAlignment.end : CrossAxisAlignment.start,
-          children: <Widget>[
-            GestureDetector(
-              onTap: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context)=> ShowMediaScreen(
-                      mediaLink: mediaUrl,
-                    )));
-              },
-              child: Material(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                borderOnForeground: true,
-                shadowColor: Color(0xffDCDCE5),
-                elevation: 3.0,
+                ]) : Column(
+              crossAxisAlignment: isMe? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context)=> ShowMediaScreen(
+                              mediaLink: mediaUrl,
+                            )));
+                      },
+                      child: Material(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderOnForeground: true,
+                        shadowColor: Color(0xffDCDCE5),
+                        elevation: 3.0,
 
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10.0),
-                  child: Image.network(
-                    mediaUrl,
-                    fit: BoxFit.fill,
-                    width: 220.0,
-                    height: 250.0,
-                    loadingBuilder: (context,child,loadingProgress){
-                      if(loadingProgress == null) return child;
-                      return CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes
-                            : null,
-                      );
-                    },
-                  ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Image.network(
+                            mediaUrl,
+                            fit: BoxFit.fill,
+                            width: 220.0,
+                            height: 250.0,
+                            loadingBuilder: (context,child,loadingProgress){
+                              if(loadingProgress == null) return child;
+                              return CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes
+                                    : null,
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+//                    BackdropFilter(
+//                      child: Container(
+//                        color: Colors.black12,
+//                      ),
+//                      filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+//                    ),
+                    Positioned(
+                        top: 5.0,
+                        bottom: 5.0,
+                        left: 5.0,
+                        right: 5.0,
+                        child: IconButton(
+                          icon: Icon(Icons.get_app),
+                          color: Colors.grey[700],
+                          iconSize: 50.0,
+                          onPressed: (){
+                            print('download');
+                          },
+                        ),
+                    )
+                  ],
                 ),
-              ),
-            ),
-            SizedBox(height: 3.0),
-            text !=null && text!= '' ? GestureDetector(
-              onLongPress: (){
-                longPressed = true;
-                isPressed = true;
-                Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
-               // Provider.of<CustomAppBar>(context,listen: false).changeAppBar();
-                Provider.of<CustomAppBar>(context, listen: false).messageOptions(context);
-              },
-              onTap: (){
-                longPressed ? Provider.of<CustomAppBar>(context,listen: false).changeAppBar() : null;
-                Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
-              },
-              child: Container(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                  child: Text(
-                    text,
-                    style: TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white//isMe ?  Colors.black45 : Colors.blue
+                SizedBox(height: 3.0),
+                text !=null && text!= '' ? GestureDetector(
+                  onLongPress: (){
+                    longPressed = true;
+                    isPressed = true;
+                    Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
+                    // Provider.of<CustomAppBar>(context,listen: false).changeAppBar();
+                    Provider.of<CustomAppBar>(context, listen: false).messageOptions(context);
+                  },
+                  onTap: (){
+                   // longPressed ? Provider.of<CustomAppBar>(context,listen: false).changeAppBar() : null;
+                    Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
+                  },
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                      child: Text(
+                        text,
+                        style: TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w500,
+                            color: isMe ?  Colors.black54 : Colors.blue
+                        ),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: isMe ? Colors.grey[100] : Color(0x253366ff),
+                      borderRadius: BorderRadius.circular(6.0),
                     ),
                   ),
-                ),
-                decoration: BoxDecoration(
-                  color: isMe ? Colors.black26 : Color(0x853366ff),
-                  borderRadius: BorderRadius.circular(6.0),
-//                                  boxShadow: [
-//                                    BoxShadow(
-//                                     // color: Color(0xffDCDCE5),
-//                                      blurRadius: 10.0,
-//                                    )
-                  // ]
-                ),
-              ),
-            ): Container(),
+                ): Container(),
+              ],
+            ),
             SizedBox(
               height: 4.0,
             ),
@@ -353,9 +367,9 @@ class MessageBubble extends StatelessWidget {
                   color: Color(0xff999999),
                   fontWeight: FontWeight.w700,
                   fontSize: 10.0),
-            )
+            ),
           ],
-        ),
+        )
       ),
     );
   }

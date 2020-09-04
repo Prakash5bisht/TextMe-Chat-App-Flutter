@@ -13,55 +13,27 @@ class CustomAppBar extends ChangeNotifier{
   Set<String> messages = {};
 
 String id;
-  bool _change = false;
+ // bool _change = false;
 
-  Widget appBar(){
-    return _change ? chatOptionAppBar() : defaultAppBar();
-  }
-
-   void changeAppBar(){
-    _change = !_change;
-    notifyListeners();
-   }
+//  Widget appBar(){
+//    return _change ? chatOptionAppBar() : defaultAppBar();
+//  }
+//
+//   void changeAppBar(){
+//    _change = !_change;
+//    notifyListeners();
+//   }
 
    void selectedMessages(String messageId){
     messages.add(messageId);
    }
 
- Widget chatOptionAppBar() {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: AppBar(
-        backgroundColor: Color(0xff263238),
-       shape: RoundedRectangleBorder(
-         borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0),bottomLeft: Radius.circular(15.0), bottomRight: Radius.circular(15.0)),
-       ),
-       // elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.clear,),
-          onPressed: (){
-            changeAppBar();
-            messages.clear();
-          },
-        ),
-        actions: <Widget>[
-          //SizedBox(width: 50.0,),
-          IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: (){
-             showDeleteAlert(context);
-            },
-          ),
-          SizedBox(width: 10.0,)
-        ],
-      ),
-    );
-  }
 
  Widget defaultAppBar() {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: AppBar(
+        leading: IconButton(icon: Icon(Icons.arrow_back), color: Colors.white, onPressed: ()=> Navigator.pop(context),),
         backgroundColor: Color(0xff263238),
 //      elevation: 0,
         shape: RoundedRectangleBorder(
@@ -76,8 +48,7 @@ String id;
               color: Colors.white,
               iconSize: 25.0,
               onPressed: () {
-//                _auth.signOut();
-//                Navigator.pop(context);
+
               }),
         ],),
     );
@@ -105,7 +76,8 @@ String id;
               onPressed: (){
                 Navigator.pop(context);
                 messages.clear();
-                changeAppBar();
+                //changeAppBar();
+                Navigator.pop(context);
               },
             ),
             FlatButton(
