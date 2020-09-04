@@ -45,14 +45,7 @@ String id;
           },
         ),
         actions: <Widget>[
-//        IconButton(
-//          icon: Icon(Icons.forward),
-//        ),
-//        SizedBox(width: 50.0,),
-//        IconButton(
-//          icon: Icon(Icons.content_copy),
-//        ),
-          SizedBox(width: 50.0,),
+          //SizedBox(width: 50.0,),
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: (){
@@ -123,7 +116,8 @@ String id;
                   _firestore.collection('message').document(messages.elementAt(i)).delete();
                 }
                 messages.clear();
-                changeAppBar();
+                Navigator.pop(context);
+//                changeAppBar();
               },
             )
           ],
@@ -133,6 +127,47 @@ String id;
 
   }
 
+
+  PersistentBottomSheetController messageOptions(BuildContext context){
+    var mediaQuery = MediaQuery.of(context).size;
+    return showBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context){
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 64.0,left: 17.0, right: 17.0),
+            child: Container(
+              height: mediaQuery.height/12.0,
+              width: mediaQuery.width,
+              decoration: BoxDecoration(
+             color: Color(0xcc262626),
+            borderRadius: BorderRadius.circular(6.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.clear, color: Colors.white,),
+                      onPressed: (){
+                        messages.clear();
+                        Navigator.pop(context);
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.delete_outline, color: Colors.white,),
+                      onPressed: (){
+                        showDeleteAlert(context);
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
   Future <String> get _localPath async{
     final directory = await getExternalStorageDirectory();
     print(directory.path);
@@ -154,6 +189,5 @@ String id;
       print('2');
       return newDirectroy.path;
     }
-   // return Directory('$path/TextMe/').path;
   }
 }

@@ -40,7 +40,6 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     getCurrentUser();
     Provider.of<CustomAppBar>(context,listen: false).context = context;
-
   }
 
 
@@ -218,8 +217,7 @@ class MessageBubble extends StatelessWidget {
     return InkWell(
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-        child:
-        Column(
+        child: mediaUrl == null ? Column(
             crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: <Widget>[
               GestureDetector(
@@ -227,21 +225,16 @@ class MessageBubble extends StatelessWidget {
                       longPressed = true;
                       isPressed = true;
                       Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
-                      Provider.of<CustomAppBar>(context,listen: false).changeAppBar();
+                     // Provider.of<CustomAppBar>(context,listen: false).changeAppBar();
+                      Provider.of<CustomAppBar>(context, listen: false).messageOptions(context);
                     },
                     onTap: (){
                       longPressed ? Provider.of<CustomAppBar>(context,listen: false).changeAppBar() : null;
                       Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
-                      mediaUrl != null ? Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context)=> ShowMediaScreen(
-                       mediaLink: mediaUrl,
-                      ))) :
-                          null;
                     },
                     child: Stack(
                       children: <Widget>[
-                        mediaUrl == null ? Material(
+                        Material(
                           //  elevation: 0.2,
                           color: isMe ? Colors.grey[100] : Color(0x253366ff) ,//Color(0xffe6ecff)
                           shadowColor: Color(0xfff4f4f7),
@@ -258,65 +251,12 @@ class MessageBubble extends StatelessWidget {
                               text,
                               style: TextStyle(
                                   fontSize: 15.0,
-                                  color: isMe ?  Colors.black45 : Colors.blue,
+                                  color: isMe ?  Colors.black54 : Colors.blue,
                                   fontWeight: FontWeight.w500
                               ),
                             ),
                           ),
-                        ): Column(
-                          crossAxisAlignment: isMe? CrossAxisAlignment.end : CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Material(
-                              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                              borderOnForeground: true,
-                              shadowColor: Color(0xffDCDCE5),
-                              elevation: 3.0,
-
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10.0),
-                                child: Image.network(
-                                  mediaUrl,
-                                  fit: BoxFit.fill,
-                                  width: 220.0,
-                                  height: 250.0,
-                                  loadingBuilder: (context,child,loadingProgress){
-                                    if(loadingProgress == null) return child;
-                                    return CircularProgressIndicator(
-                                      value: loadingProgress.expectedTotalBytes != null
-                                          ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes
-                                          : null,
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 3.0),
-                           text !=null && text!= '' ? Container(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                                child: Text(
-                                  text,
-                                  style: TextStyle(
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white//isMe ?  Colors.black45 : Colors.blue
-                                  ),
-                                ),
-                              ),
-                              decoration: BoxDecoration(
-                                  color: isMe ? Colors.black26 : Color(0x853366ff),
-                                  borderRadius: BorderRadius.circular(6.0),
-//                                  boxShadow: [
-//                                    BoxShadow(
-//                                     // color: Color(0xffDCDCE5),
-//                                      blurRadius: 10.0,
-//                                    )
-                                 // ]
-                                ),
-                            ): Container()
-                          ],
-                        ),
+                        )
                       ],
                     ),
                   ),
@@ -330,7 +270,92 @@ class MessageBubble extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                     fontSize: 10.0),
               ),
-            ]),
+            ]) : Column(
+          crossAxisAlignment: isMe? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: <Widget>[
+            GestureDetector(
+              onTap: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context)=> ShowMediaScreen(
+                      mediaLink: mediaUrl,
+                    )));
+              },
+              child: Material(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderOnForeground: true,
+                shadowColor: Color(0xffDCDCE5),
+                elevation: 3.0,
+
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Image.network(
+                    mediaUrl,
+                    fit: BoxFit.fill,
+                    width: 220.0,
+                    height: 250.0,
+                    loadingBuilder: (context,child,loadingProgress){
+                      if(loadingProgress == null) return child;
+                      return CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes
+                            : null,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 3.0),
+            text !=null && text!= '' ? GestureDetector(
+              onLongPress: (){
+                longPressed = true;
+                isPressed = true;
+                Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
+               // Provider.of<CustomAppBar>(context,listen: false).changeAppBar();
+                Provider.of<CustomAppBar>(context, listen: false).messageOptions(context);
+              },
+              onTap: (){
+                longPressed ? Provider.of<CustomAppBar>(context,listen: false).changeAppBar() : null;
+                Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
+              },
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white//isMe ?  Colors.black45 : Colors.blue
+                    ),
+                  ),
+                ),
+                decoration: BoxDecoration(
+                  color: isMe ? Colors.black26 : Color(0x853366ff),
+                  borderRadius: BorderRadius.circular(6.0),
+//                                  boxShadow: [
+//                                    BoxShadow(
+//                                     // color: Color(0xffDCDCE5),
+//                                      blurRadius: 10.0,
+//                                    )
+                  // ]
+                ),
+              ),
+            ): Container(),
+            SizedBox(
+              height: 4.0,
+            ),
+            Text(
+              DateAndTime().getDateAndTime(time),
+              style: TextStyle(
+                  color: Color(0xff999999),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 10.0),
+            )
+          ],
+        ),
       ),
     );
   }
