@@ -10,18 +10,26 @@ import 'package:test_app/screens/login_screen.dart';
 import 'package:test_app/screens/registration_screen.dart';
 import 'package:test_app/screens/chat_screen.dart';
 import 'screens/launch_screen.dart';
+import 'services/user_registration_status.dart';
 
-void main() => runApp(TextMe());
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  final _state = await UserRegistrationStatus().checkRegistrationStatus();
+  runApp(TextMe(myState: _state));
+}
 
 class TextMe extends StatelessWidget {
+  TextMe({@required this.myState});
+  final bool myState;
+
   @override
   Widget build(BuildContext context) {
-    var mySystemTheme = SystemUiOverlayStyle.light.copyWith(systemNavigationBarColor: Colors.black );
+    var mySystemTheme = SystemUiOverlayStyle.light.copyWith(systemNavigationBarColor: Colors.black);
     SystemChrome.setSystemUIOverlayStyle(mySystemTheme);
     return ChangeNotifierProvider(
       create: (context)=> CustomAppBar(),
       child: MaterialApp(
-        initialRoute: LaunchScreen.id,
+        initialRoute: myState == true ? ChatScreen.id : RegistrationScreen.id,
         routes: {
           LaunchScreen.id: (context)=> LaunchScreen(),
           WelcomeScreen.id: (context)=> WelcomeScreen(),
