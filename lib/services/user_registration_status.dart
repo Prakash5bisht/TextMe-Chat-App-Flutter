@@ -4,20 +4,20 @@ import 'package:path_provider/path_provider.dart';
 class UserRegistrationStatus{
 
   Future<String> get _path async{
-    final directory = await getApplicationDocumentsDirectory();
-    print(directory);
-    return directory.path;
+    final _directory = await getApplicationDocumentsDirectory();
+    print(_directory);
+    return _directory.path;
   }
 
   Future<File> get _statusFile async{
-    final path = await  _path;
+    final _statusFilePath = await  _path;
 
-    if(await File('$path/TextMe.txt').exists()){
-      return File('$path/TextMe.txt');
+    if(await File('$_statusFilePath/TextMe.txt').exists()){
+      return File('$_statusFilePath/TextMe.txt');
     }
     else{
       File('$path/TextMe.txt').writeAsString('false');
-      return File('$path/TextMe.txt');
+      return File('$_statusFilePath/TextMe.txt');
     }
   }
 
