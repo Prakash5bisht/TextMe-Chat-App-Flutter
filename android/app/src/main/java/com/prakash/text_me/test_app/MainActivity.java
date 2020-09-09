@@ -13,6 +13,6 @@ public class MainActivity extends FlutterActivity {
   @Override
   public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
     GeneratedPluginRegistrant.registerWith(flutterEngine);
-     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
   }
 }
