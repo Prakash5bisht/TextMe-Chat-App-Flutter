@@ -1,3 +1,4 @@
+import 'package:downloads_path_provider/downloads_path_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -127,6 +128,7 @@ String id;
                         Navigator.pop(context);
                       },
                     ),
+                    Text('${messages.length}', style: TextStyle(color: Colors.greenAccent, fontSize: 18.0),),
                     IconButton(
                       icon: Icon(Icons.delete_outline, color: Colors.white,),
                       onPressed: (){
@@ -157,9 +159,15 @@ String id;
     }
 
     else{
-      final newDirectroy = await myDirectory.create(recursive: false);
+      final newDirectory = await myDirectory.create(recursive: false);
       print('2');
-      return newDirectroy.path;
+      return newDirectory.path;
     }
+  }
+
+  Future<String> initDownloadsDirectory() async{
+     Directory downloadsDirectory;
+     downloadsDirectory = await DownloadsPathProvider.downloadsDirectory;
+     return downloadsDirectory.path;
   }
 }
