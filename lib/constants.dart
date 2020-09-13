@@ -43,14 +43,14 @@ const kInputFieldDecoration = InputDecoration(
   ),
 );
 
-const kAppBarTextStyle = TextStyle(color: Color(0xffe6e6e6), fontSize: 20.0);
+const kAppBarTextStyle = TextStyle(color: Color(0xff404040), fontSize: 20.0, fontWeight: FontWeight.w500);
 const kAppBarTextFieldHintStyle = TextStyle(
   color: Color(0xff8c8c8c),
   fontSize: 18.0,
 );
 
 const kAppBarTextFieldStyle = TextStyle(
-  color: Color(0xffffffff),
+  color: Color(0xff404040),
   fontSize: 18.0,
 );
 
