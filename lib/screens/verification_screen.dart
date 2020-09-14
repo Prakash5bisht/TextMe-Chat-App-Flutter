@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:async';
 
 import 'package:test_app/components/custom_alert_dialog.dart';
+import 'package:test_app/components/reusable_container.dart';
 
 class VerificationScreen extends StatefulWidget {
+  VerificationScreen({this.phoneNumber});
   static const String id = 'verification_screen';
+
+  final String phoneNumber;
   @override
   _VerificationScreenState createState() => _VerificationScreenState();
 }
@@ -13,10 +18,11 @@ class VerificationScreen extends StatefulWidget {
 class _VerificationScreenState extends State<VerificationScreen> {
   Timer _timer;
   int _start = 30;
+  final otpFieldController = TextEditingController();
 
   @override
   void initState() {
-   // otpValidationPeriod();
+    otpValidationPeriod();
     super.initState();
   }
   void otpValidationPeriod(){
@@ -58,7 +64,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   icon: Icon(Icons.chevron_left, size: 28.0,),
                   color: Color(0xff263238),
                   onPressed: (){
-
+                   Navigator.pop(context);
                   },
                 ),
               ),
@@ -87,7 +93,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         children: <Widget>[
                           Text('Phone Number:', style: TextStyle(color: Color(0xff9b9aac), fontWeight: FontWeight.w700),),
                           SizedBox(width: 5.0,),
-                          Text('+91 123456789', style: TextStyle(color: Color(0xff393ac5), fontWeight: FontWeight.w500),),
+                          Text(widget.phoneNumber, style: TextStyle(color: Color(0xff393ac5), fontWeight: FontWeight.w500),),
                         ],
                       )
                     ],
@@ -98,26 +104,26 @@ class _VerificationScreenState extends State<VerificationScreen> {
                  child: Column(
                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                    children: <Widget>[
-                    Container(
-                      height: size.height/10.0,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(width: 0.3, color: Color(0xffd9d9d9)),
-                          borderRadius: BorderRadius.circular(12.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0x10263238),
-                              blurRadius: 10.0,
-                              // offset: Offset(0, 5)
-                            )
-                          ]
-                      ),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          border: InputBorder.none
-                        ),
-                      ),
-                    ),
+                     Flexible(
+                       child: Container(
+                         width: size.width/2.0,
+                         child: Theme(
+                           data: ThemeData(primaryColor: Color(0xff263238)),
+                           child: TextField(
+                             controller: otpFieldController,
+                             autofocus: true,
+                             keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
+                             cursorColor: Color(0xff263238),
+                             textAlign: TextAlign.center,
+                             inputFormatters: [LengthLimitingTextInputFormatter(6)],
+                             style: TextStyle(
+                               color: Colors.grey[700],
+                               fontSize: 25.0
+                             ),
+                           ),
+                         ),
+                       ),
+                     ),
                      Text(
                         _start>9 ? '00:$_start' : '00:0$_start',
                        style: TextStyle(color: Colors.black38, fontWeight: FontWeight.w500),
