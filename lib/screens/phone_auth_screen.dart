@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:test_app/screens/country_picker_screen.dart';
+import 'package:test_app/components/custom_alert_dialog.dart';
 import 'package:test_app/services/country_assets.dart';
+
 
 class PhoneAuthentication extends StatefulWidget {
   static const String id = 'phone_auth_screen';
@@ -109,27 +111,6 @@ class _PhoneAuthenticationState extends State<PhoneAuthentication> {
                   signIn();
                 },
               )
-            ],
-          );
-        }
-    );
-  }
-
-
-  void _showAlert(String info){
-    showDialog(
-        context: context,
-        builder: (BuildContext context){
-          return AlertDialog(
-            title: Text('OOPS!'),
-            content:  Text(info, style: TextStyle(color: Colors.grey[700]),),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('OK'),
-                onPressed: (){
-                  Navigator.of(context).pop();
-                },
-              ),
             ],
           );
         }
@@ -414,7 +395,7 @@ class _PhoneAuthenticationState extends State<PhoneAuthentication> {
                       child: Icon(Icons.chevron_right, color: Colors.white,),
                       onPressed: (){
                         try{
-                          phoneNo.length == 0 || phoneNo.length <10 ? _showAlert('Please enter a valid phone number') : dialCode.length == 0 ? _showAlert('please select your country') : _verifyPhoneNumber(context);
+                          phoneNo.length == 0 || phoneNo.length <10 ? showAlert(context,'OOPS!','Please enter a valid phone number') : dialCode.length == 0 ? showAlert(context,'Sorry','Please select your country') : _verifyPhoneNumber(context);
                         }catch(e){
                           print(e);
                         }
