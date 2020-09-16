@@ -53,7 +53,7 @@ class _CountryPickerState extends State<CountryPicker> {
                   height: 50.0,
                  child: customAppBar(context),//customAppBar(context),
                   decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Color(0xff263238),
                       border: Border.all(width: 0.3, color: Color(0xffd9d9d9)),
                       borderRadius: BorderRadius.circular(25.0),
                       boxShadow: [
@@ -153,7 +153,7 @@ class _CountryPickerState extends State<CountryPicker> {
           IconButton(
             icon: Icon(
               Icons.keyboard_arrow_left,
-              color: Colors.black45,
+              color: Colors.white,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -165,7 +165,7 @@ class _CountryPickerState extends State<CountryPicker> {
           IconButton(
               icon: Icon(
                 icon,
-                color: Colors.black45,
+                color: Colors.white,
               ),
               onPressed: () {
                 if (icon == Icons.search) {
@@ -178,7 +178,7 @@ class _CountryPickerState extends State<CountryPicker> {
                       ),
                       controller: controller,
                       style: kAppBarTextFieldStyle,
-                      cursorColor: Colors.black26,
+                      cursorColor: Colors.white,
                       autofocus: true,
                     );
                     icon = Icons.clear;
@@ -244,7 +244,7 @@ class CustomTiles extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14.0,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xff1a1a1a)),
+                        color: Color(0xff404040)),
                   ),
                 ),
                 Flexible(
@@ -253,7 +253,7 @@ class CustomTiles extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xff595959)),
+                        color: Color(0xff666666)),
                   ),
                 ),
               ],
