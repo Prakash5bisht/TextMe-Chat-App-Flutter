@@ -1,16 +1,20 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:test_app/screens/registration_screen/service.dart';
 import 'dart:async';
 
 import 'package:test_app/components/custom_alert_dialog.dart';
-import 'package:test_app/components/reusable_container.dart';
 
 class VerificationScreen extends StatefulWidget {
-  VerificationScreen({this.phoneNumber});
+  VerificationScreen({this.phoneNumber,this.verificationId, this.dialCode});
   static const String id = 'verification_screen';
 
   final String phoneNumber;
+  final String verificationId;
+  final String dialCode;
   @override
   _VerificationScreenState createState() => _VerificationScreenState();
 }
@@ -20,12 +24,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
   int _start = 30;
   final otpFieldController = TextEditingController();
 
+
   @override
   void initState() {
-    otpValidationPeriod();
+    startOtpValidationTimer();
     super.initState();
   }
-  void otpValidationPeriod(){
+  void startOtpValidationTimer(){
     _start = 30;
     const oneSecond = const Duration(seconds: 1);
     _timer = Timer.periodic(
@@ -76,14 +81,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Text('Verification', style: TextStyle(color: Color(0xff9b9aac), fontWeight: FontWeight.w700),),
+                      Text('Verification', style: TextStyle(color: Color(0xff9b9aac), fontWeight: FontWeight.w600, fontSize: 18.0),),
                       SizedBox(height: 8.0,),
                       Flexible(
                         child: Text(
                           'We sent you an SMS code',
                           style: TextStyle(
                             color: Color(0xff383852),
-                            fontWeight: FontWeight.w900,
+                            fontWeight: FontWeight.w600,
                             fontSize: 24.0,
                           ),
                         ),
@@ -91,9 +96,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       SizedBox(height: 6.0,),
                       Row(
                         children: <Widget>[
-                          Text('Phone Number:', style: TextStyle(color: Color(0xff9b9aac), fontWeight: FontWeight.w700),),
+                          Text('Phone number:', style: TextStyle(color: Color(0xff9b9aac), fontWeight: FontWeight.w600),),
                           SizedBox(width: 5.0,),
-                          Text(widget.phoneNumber, style: TextStyle(color: Color(0xff393ac5), fontWeight: FontWeight.w500),),
+                          Text(widget.dialCode, style: TextStyle(color: Color(0xff6161d1), fontWeight: FontWeight.w500),),
+                          SizedBox(width: 5.0,),
+                          Text(widget.phoneNumber, style: TextStyle(color: Color(0xff6161d1), fontWeight: FontWeight.w500),),
                         ],
                       )
                     ],
@@ -142,7 +149,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       color: Color(0xff263238),
                       child: Text('Verify', style: TextStyle(color: Colors.white),),
                       onPressed: (){
-                       showAlert(context, 'Error', 'The OTP you entered was incorrect');
+                        otpFieldController.text == null || otpFieldController.text == '' ? showAlert(context: context, alert: 'Uh oh!', description: 'Please enter the OTP') :
+                      Service().signIn(context, otpFieldController.text, widget.verificationId);
                       },
                     ),
                     SizedBox(height: 6.0,),
@@ -151,8 +159,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       children: <Widget>[
                         Text('Didn\'t received code?', style: TextStyle(color: Color(0xff9b9aac), fontWeight: FontWeight.w500),),
                         FlatButton(
-                          child: Text('Resend' , style: TextStyle(color: _start >= 1 ? Colors.grey : Color(0xff393ac5), fontWeight: FontWeight.w500),),
-                          onPressed: _start > 1 ? null : otpValidationPeriod,
+                          child: Text('Resend' , style: TextStyle(color: _start >= 1 ? Colors.grey : Color(0xff6161d1), fontWeight: FontWeight.w500),),
+                          onPressed: _callServiceClass// _start > 1 ? null : startOtpValidationTimer,
                         )
                       ],
                     )
@@ -164,5 +172,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
         ),
       ),
     );
+  }
+
+  void _callServiceClass(){
+    if(_start == 0){
+      Service().verifyPhoneNumber(context, widget.dialCode, widget.phoneNumber, VerificationScreen.id);
+      otpFieldController.clear();
+      startOtpValidationTimer();
+    }
   }
 }
