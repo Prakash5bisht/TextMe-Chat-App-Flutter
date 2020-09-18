@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:test_app/services/country_assets.dart';
 import 'package:test_app/constants.dart';
 
 Country country = Country();
-
- void main() => runApp(CountryPicker());
 
 class CountryPicker extends StatefulWidget {
   static const String id = 'country_picker_screen';
@@ -18,7 +17,7 @@ class _CountryPickerState extends State<CountryPicker> {
   String filter;
   IconData icon = Icons.search;
   Widget appBarTitle = Text(
-    '',
+    'Search Countries',
     style: kAppBarTextStyle,
   );
   @override
@@ -39,11 +38,9 @@ class _CountryPickerState extends State<CountryPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SafeArea(
+    return SafeArea(
         child: Scaffold(
             backgroundColor: Colors.white,
-           // appBar: customAppBar(context),
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
@@ -54,7 +51,7 @@ class _CountryPickerState extends State<CountryPicker> {
                        IconButton(
                           icon: Icon(Icons.chevron_left, color: Color(0xff666666), size: 30.0,),
                           onPressed: (){
-
+                          Navigator.pop(context);
                           },
                         ),
                       Text(
@@ -77,7 +74,6 @@ class _CountryPickerState extends State<CountryPicker> {
                    child: customAppBar(context),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                       // border: Border.all(width: 1.8, color: Color(0xfff2f5f8)),
                         borderRadius: BorderRadius.circular(10.0),
                         boxShadow: [
                           BoxShadow(
@@ -108,8 +104,7 @@ class _CountryPickerState extends State<CountryPicker> {
               ],
             ),
           ),
-      ),
-    );
+      );
   }
 
   // Widget customAppBar(BuildContext context) {
@@ -173,7 +168,6 @@ class _CountryPickerState extends State<CountryPicker> {
   Widget customAppBar(BuildContext context){
     return Container(
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           IconButton(
               icon: Icon(
@@ -185,7 +179,7 @@ class _CountryPickerState extends State<CountryPicker> {
                   setState(() {
                     this.appBarTitle = TextField(
                       decoration: InputDecoration(
-                        hintText: 'Search countries',
+                        hintText: 'Search Countries',
                         hintStyle: kAppBarTextFieldHintStyle,
                         border: InputBorder.none,
                       ),
@@ -200,7 +194,7 @@ class _CountryPickerState extends State<CountryPicker> {
                   setState(() {
                     icon = Icons.search;
                     appBarTitle = Text(
-                      '',
+                      'Search Countries',
                       style: kAppBarTextStyle,
                     );
                     controller.clear();
@@ -215,6 +209,8 @@ class _CountryPickerState extends State<CountryPicker> {
     );
   }
 
+
+
 }
 
 class CustomTiles extends StatelessWidget {
@@ -225,27 +221,17 @@ class CustomTiles extends StatelessWidget {
   Widget build(BuildContext context) {
     var size  = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 6.0),
-      child: GestureDetector(
-        onTap: () {
-         // Navigator.of(context).pop([countryDialCode, countryName]);
-          print('tapped');
-        },
-        child: Container(
-          height: size.height/13.0,
-          width: size.width/3.0,
-          // decoration: BoxDecoration(
-          //     color: Colors.white, //Color(0xffdbe8fe)
-          //     borderRadius: BorderRadius.circular(10.0),
-          //     // boxShadow: [
-          //     //   BoxShadow(
-          //     //     color: Color(0xffDCDCE5),
-          //     //     blurRadius: 10.0,
-          //     //   )
-          //     // ],
-          // ),
-          child:
-            Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 1.0),
+      child: Column(
+        children: <Widget>[
+          InkWell(
+            borderRadius: BorderRadius.circular(10.0),
+            splashColor: Color(0xffdbe8fe),
+            highlightColor: Color(0xffdbe8fe),
+            onTap: (){
+               Navigator.of(context).pop([countryDialCode, countryName]);
+            },
+            child: Padding(
               padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -286,7 +272,9 @@ class CustomTiles extends StatelessWidget {
                 ],
               ),
             ),
-        ),
+          ),
+          Divider(),
+        ],
       ),
     );
   }
