@@ -81,13 +81,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Text('Verification', style: TextStyle(color: Color(0xff9b9aac), fontWeight: FontWeight.w600, fontSize: 18.0),),
+                      Text('Verification', style: TextStyle(color: Color(0xff70768a), fontWeight: FontWeight.w600, fontSize: 18.0),),
                       SizedBox(height: 8.0,),
                       Flexible(
                         child: Text(
                           'We sent you an SMS code',
                           style: TextStyle(
-                            color: Color(0xff383852),
+                            color: Color(0xff393d48),
                             fontWeight: FontWeight.w600,
                             fontSize: 24.0,
                           ),
@@ -96,11 +96,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       SizedBox(height: 6.0,),
                       Row(
                         children: <Widget>[
-                          Text('Phone number:', style: TextStyle(color: Color(0xff9b9aac), fontWeight: FontWeight.w600),),
+                          Text('Phone number:', style: TextStyle(color: Color(0xff70768a), fontWeight: FontWeight.w600),),
                           SizedBox(width: 5.0,),
-                          Text(widget.dialCode, style: TextStyle(color: Color(0xff6161d1), fontWeight: FontWeight.w500),),
+                          Text(widget.dialCode, style: TextStyle(color: Color(0xff599ae0), fontWeight: FontWeight.w500),),
                           SizedBox(width: 5.0,),
-                          Text(widget.phoneNumber, style: TextStyle(color: Color(0xff6161d1), fontWeight: FontWeight.w500),),
+                          Text(widget.phoneNumber, style: TextStyle(color: Color(0xff599ae0), fontWeight: FontWeight.w500),),
                         ],
                       )
                     ],

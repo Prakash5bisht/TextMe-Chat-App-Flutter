@@ -60,7 +60,7 @@ class _PhoneAuthenticationState extends State<PhoneAuthentication> {
                         Text(
                           'Welcome',
                           style: TextStyle(
-                              color: Color(0xff9b9aac),
+                              color: Color(0xff70768a),
                               fontWeight: FontWeight.w600,
                               fontSize: 18.0
                           ),
@@ -70,7 +70,7 @@ class _PhoneAuthenticationState extends State<PhoneAuthentication> {
                           child: Text(
                             'Fill the details to become our verified user',
                             style: TextStyle(
-                              color: Color(0xff383852),
+                              color: Color(0xff393d48),
                               fontWeight: FontWeight.w600,
                               fontSize: 24.0,
                             ),
