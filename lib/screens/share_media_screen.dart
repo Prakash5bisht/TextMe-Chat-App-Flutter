@@ -9,6 +9,8 @@ import 'package:test_app/screens/chat_screen_components.dart';
 //import 'package:test_app/models/custom_appbar.dart';
 import 'package:test_app/screens/media_preview_screen.dart';
 
+import 'registration_screen/phone_auth_screen.dart';
+
 class ShareMediaScreen extends StatefulWidget {
 
   @override
@@ -25,16 +27,18 @@ class _ShareMediaScreenState extends State<ShareMediaScreen> {
     return  Padding(
       padding: const EdgeInsets.only(top: 9.0),
       child: IconButton(
+          splashColor: Color(0xffc6d0d2),
+          highlightColor: Color(0xffc6d0d2),
           icon: Icon(
             CustomIconsSet.share_social_interface_button,
-            color: Color(0xff309691),//Color(0x99263238),
-            size: 30.0,
+            color: Color(0xff525260),//Color(0xff667a7e),//Color(0x99263238),
+            size: 27.0,
           ),
           onPressed: () async{
             // File file = await _statusFile;
             // file.delete();
             // print('done');
-           // Navigator.pushNamed(context, PhoneAuthentication.id);
+            //Navigator.pushNamed(context, PhoneAuthentication.id);
             showModalBottomSheet(
               backgroundColor: Colors.transparent,
                 context: context,
@@ -77,8 +81,10 @@ class _ShareMediaScreenState extends State<ShareMediaScreen> {
                                 ),
                                 Expanded(
                                   child: ReusableButton(
+                                    splashColor: Color(0xffffd8cc),
+                                    highlightColor: Color(0xffffd8cc),
                                     iconData: CustomIconsSet.headphones_audio_symbol,//Colors.deepOrangeAccent
-                                    iconColor: Color(0xfffb9008),
+                                    iconColor: Colors.deepOrangeAccent,
                                      function: (){
                                       print('ok');
                                     },
@@ -94,8 +100,10 @@ class _ShareMediaScreenState extends State<ShareMediaScreen> {
                               children: <Widget>[
                                 Expanded(
                                   child: ReusableButton(
+                                    splashColor: Color(0xffc5eded),
+                                    highlightColor: Color(0xffc5eded),
                                     iconData: CustomIconsSet.images_square_outlined_interface_button_symbol,//Colors.blue[600]
-                                    iconColor: Color(0xff309691),
+                                    iconColor: Color(0xff009772),
                                     function: (){
                                       try{
                                        // getMedia(context,ImageSource.gallery);
@@ -111,6 +119,8 @@ class _ShareMediaScreenState extends State<ShareMediaScreen> {
                                 ),
                                 Expanded(
                                   child: ReusableButton(
+                                    highlightColor: Color(0xfffed4cd),
+                                    splashColor: Color(0xfffed4cd),
                                     iconData: CustomIconsSet.big_map_placeholder_outlined_symbol_of_interface,  //Colors.red
                                     iconColor: Color(0xfffc2315),
                                     function: (){
@@ -128,8 +138,10 @@ class _ShareMediaScreenState extends State<ShareMediaScreen> {
                               children: <Widget>[
                                 Expanded(
                                   child: ReusableButton(
+                                    splashColor: Color(0xfffddaa2),
+                                    highlightColor: Color(0xfffeebcd),
                                     iconData: CustomIconsSet.file_rounded_outlined_symbol, //Colors.deepPurpleAccent[100]
-                                    iconColor: Color(0xfffb9008),
+                                    iconColor: Color(0xfffaa61e),
                                     function: (){
                                       // ImagePicker().getVideo(source: ImageSource.gallery).then((video){
                                       //   Navigator.push(context, MaterialPageRoute(builder: (context) => MediaPreviewScreen(media: video,) ));
@@ -143,8 +155,10 @@ class _ShareMediaScreenState extends State<ShareMediaScreen> {
                                 ),
                                 Expanded(
                                   child: ReusableButton(
+                                    splashColor: Color(0xffcdd0fe),
+                                    highlightColor: Color(0xffcdd0fe),
                                     iconData: CustomIconsSet.phone_auricular_outline,  //Colors.lightBlue
-                                    iconColor: Colors.indigoAccent,
+                                    iconColor: Color(0xff2735fb),
                                     function: (){
 
                                     },
