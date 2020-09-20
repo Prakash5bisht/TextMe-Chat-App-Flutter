@@ -7,7 +7,7 @@ const kSendButtonTextStyle = TextStyle(
 );
 
 const kMessageTextFieldDecoration = InputDecoration(
-  contentPadding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 23.0),
+  contentPadding: EdgeInsets.only(top: 3.0, bottom: 3.0, left: 25.0, right: 14.0),
   hintText: 'Type your message...',
   border: InputBorder.none,
   hintStyle: TextStyle(color: Colors.grey),
@@ -56,6 +56,8 @@ const kAppBarTextFieldStyle = TextStyle(
 );
 
 const kShareMediaScreenTextStyle = TextStyle(
-  fontWeight: FontWeight.w500,
-  color: Color(0xff8c8c8c),
+  fontWeight: FontWeight.w600,
+  fontSize: 12.0,
+  fontFamily: 'Poppins',
+  color: Color(0x900d0e13),//Color(0xff989dac),
 );
