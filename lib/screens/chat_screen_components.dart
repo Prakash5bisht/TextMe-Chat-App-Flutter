@@ -16,7 +16,7 @@ class ReusableButton extends StatelessWidget {
       color: Colors.white,
       highlightColor: highlightColor,
       splashColor: splashColor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+      shape: CircleBorder(),
       child: Icon(
         iconData,
         size: 22.0,
