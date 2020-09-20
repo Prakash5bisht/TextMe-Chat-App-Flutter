@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:test_app/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:test_app/models/custom_appbar.dart';
+import 'package:test_app/custom_icons_set_icons.dart';
+import 'package:test_app/provider/custom_appbar.dart';
 import 'package:test_app/screens/share_media_screen.dart';
 import 'package:test_app/screens/show_media_screen.dart';
 import 'package:test_app/services/date_and_time.dart';
@@ -33,6 +34,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   var textMessage = '';
   final textController = TextEditingController();
+  double padding = 0.0;
 
 
 
@@ -66,76 +68,105 @@ class _ChatScreenState extends State<ChatScreen> {
 ////          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 52.0),
+              padding: const EdgeInsets.all(4.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   ChatBuilder(),
-                  Container(
-                    height: 64.0,
-                    child: Row(
-                      //crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 10.0),
-                          child: ShareMediaScreen(),
-                        ),
-                        Expanded(
-                          flex: 5,
-                          child: Padding(
-                            padding:
-                            EdgeInsets.symmetric(vertical: 2.0, horizontal: 10.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[100],
-                                  borderRadius: BorderRadius.circular(35.0),
-                                  boxShadow: [
-                                    BoxShadow(
-//                                offset: Offset(0, 1),
-                                      blurRadius: 0,
-                                      color: Colors.grey,
-                                    )
-                                  ]),
-                              child: TextField(
-                                controller: textController,
-                                style: TextStyle(fontSize: 18.0),
-                                onChanged: (value) {
-                                  textMessage = value;
-                                },
-                                decoration: kMessageTextFieldDecoration,
-                                textCapitalization: TextCapitalization.sentences,
-                                maxLines: null,
+                  Stack(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 23.0),
+                        child: Row(
+                          //crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10.0),
+                              child: ShareMediaScreen(),
+                            ),
+                            Expanded(
+                              flex: 5,
+                              child: Padding(
+                                padding:
+                                EdgeInsets.symmetric(vertical: 2.0, horizontal: 6.0),
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxHeight: 135.0
+                                  ),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(35.0),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Color(0xffeef0f8),
+                                            blurRadius: 6.0,
+                                            spreadRadius: 2.0,
+                                           // offset: Offset(-1, 1)
+                                          )
+                                        ]
+                                         ),
+                                    child: Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(right: 28.0),
+                                        child: ScrollConfiguration(
+                                        behavior: ScrollBehavior()..buildViewportChrome(context, null, AxisDirection.down),
+                                          child: Scrollbar(
+                                            child: TextField(
+                                              onTap: (){
+                                                setState(() {
+                                                 // padding = 30.0;
+                                                });
+                                              },
+                                              controller: textController,
+                                              style: TextStyle(fontSize: 18.0),
+                                              onChanged: (value) {
+                                                textMessage = value;
+                                              },
+                                              decoration: kMessageTextFieldDecoration,
+                                              textCapitalization: TextCapitalization.sentences,
+                                              maxLines: null,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                        right: 0.0,
+                        bottom: 8.0,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 1.5),
+                          child: MaterialButton(
+                            height: 48.5,
+                            shape: CircleBorder(),
+                            color: Color(0xff3366ff),
+                            elevation: 5,
+                            onPressed: () {
+                              textController.clear();
+                              _firestore.collection('message').add({
+                                'text': textMessage,
+                                'sender': loggedInUser.email,
+                                'timestamp': new DateTime.now().toUtc(),
+                              });
+                              textMessage = '';
+                            },
+                            child: Icon(
+                              Icons.chevron_right,
+                              size: 29.0,
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 3.0),
-                            child: MaterialButton(
-                              height: 45.0,
-                              shape: CircleBorder(),
-                              color: Color(0xff3366ff),
-                              elevation: 5,
-                              onPressed: () {
-                                textController.clear();
-                                _firestore.collection('message').add({
-                                  'text': textMessage,
-                                  'sender': loggedInUser.email,
-                                  'timestamp': new DateTime.now().toUtc(),
-                                });
-                                textMessage = '';
-                              },
-                              child: Icon(
-                                Icons.send,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -192,6 +223,7 @@ class ChatBuilder extends StatelessWidget {
         return Expanded(
           child: Scrollbar(
             child: ListView(
+              physics: BouncingScrollPhysics(),
               reverse: true,
               children: messageBubbles,
             ),
@@ -309,20 +341,20 @@ class MessageBubble extends StatelessWidget {
 //                      ),
 //                      filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
 //                    ),
-                    Positioned(
-                        top: 5.0,
-                        bottom: 5.0,
-                        left: 5.0,
-                        right: 5.0,
-                        child: IconButton(
-                          icon: Icon(Icons.get_app),
-                          color: Colors.grey[700],
-                          iconSize: 50.0,
-                          onPressed: (){
-                            print('download');
-                          },
-                        ),
-                    )
+//                    Positioned(
+//                        top: 5.0,
+//                        bottom: 5.0,
+//                        left: 5.0,
+//                        right: 5.0,
+//                        child: IconButton(
+//                          icon: Icon(Icons.get_app),
+//                          color: Colors.grey[700],
+//                          iconSize: 50.0,
+//                          onPressed: (){
+//                            print('download');
+//                          },
+//                        ),
+//                    )
                   ],
                 ),
                 SizedBox(height: 3.0),
