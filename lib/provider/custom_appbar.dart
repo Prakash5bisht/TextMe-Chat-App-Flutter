@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:test_app/components/custom_alert_dialog.dart';
+import 'package:test_app/custom_icons_set_icons.dart';
+import 'package:test_app/screens/chat_screen_components.dart';
 
 final Firestore _firestore = Firestore.instance;
 
@@ -34,7 +37,7 @@ String id;
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: AppBar(
-        leading: IconButton(icon: Icon(Icons.arrow_back), color: Colors.white, onPressed: ()=> Navigator.pop(context),),
+        leading: IconButton(icon: Icon(Icons.chevron_left, size: 30.0,), color: Colors.white, onPressed: ()=> Navigator.pop(context),),
         backgroundColor: Color(0xff263238),
 //      elevation: 0,
         shape: RoundedRectangleBorder(
@@ -58,6 +61,7 @@ String id;
   void showDeleteAlert(context) {
 
     String text = messages.length > 1 ? 'messages' : 'message';
+
     showDialog(
       context: context,
       builder: (BuildContext context){
@@ -105,36 +109,65 @@ String id;
     var mediaQuery = MediaQuery.of(context).size;
     return showBottomSheet(
         context: context,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent,//Colors.transparent,
         builder: (context){
           return Padding(
-            padding: const EdgeInsets.only(bottom: 64.0,left: 17.0, right: 17.0),
+            padding: const EdgeInsets.only(bottom: 65.0,left: 65.0, right: 65.0),
             child: Container(
               height: mediaQuery.height/12.0,
               width: mediaQuery.width,
               decoration: BoxDecoration(
-             color: Color(0xcc262626),
-            borderRadius: BorderRadius.circular(6.0),
+             color: Colors.white,//Color(0xcc262626),
+            borderRadius: BorderRadius.circular(28.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xffeef0f8),
+                    blurRadius: 4.0,
+                    spreadRadius: 1.0,
+                    // offset: Offset(-1, 1)
+                  )
+                ]
               ),
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 4.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     IconButton(
-                      icon: Icon(Icons.clear, color: Colors.white,),
+                      icon: Icon(Icons.clear, color: Colors.black,),
                       onPressed: (){
                         messages.clear();
                         Navigator.pop(context);
                       },
                     ),
-                    Text('${messages.length}', style: TextStyle(color: Colors.greenAccent, fontSize: 18.0),),
-                    IconButton(
-                      icon: Icon(Icons.delete_outline, color: Colors.white,),
+                    MaterialButton(
+                      elevation: 0.0,
+                      shape: CircleBorder(),
+                      child: Icon(
+                        CustomIconsSet.recycling_bin,
+                        color: Colors.red,
+                      ),
+                      color: Colors.red[50],
+                      splashColor: Colors.red[300],
+                      highlightColor: Colors.red[300],
                       onPressed: (){
                         showDeleteAlert(context);
                       },
-                    )
+                    ),
+                    // IconButton(
+                    //   icon: Icon(Icons.clear, color: Colors.white,),
+                    //   onPressed: (){
+                    //     messages.clear();
+                    //     Navigator.pop(context);
+                    //   },
+                    // ),
+                   // Text('${messages.length}', style: TextStyle(color: Colors.greenAccent, fontSize: 18.0),),
+                   //  IconButton(
+                   //    icon: Icon(Icons.delete_outline, color: Colors.white,),
+                   //    onPressed: (){
+                   //      showDeleteAlert(context);
+                   //    },
+                   //  )
                   ],
                 ),
               ),
