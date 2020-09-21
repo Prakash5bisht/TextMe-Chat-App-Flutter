@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:downloads_path_provider/downloads_path_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,9 +17,20 @@ class CustomAppBar extends ChangeNotifier{
 
   BuildContext context;
 
+  FirebaseUser _user;
+
+
   Set<String> messages = {};
 
-String id;
+  String id;
+
+  FirebaseUser getCurrentUser(){
+    return _user;
+  }
+
+  void setCurrentUser(FirebaseUser firebaseUser){
+    _user = firebaseUser;
+  }
  // bool _change = false;
 
 //  Widget appBar(){
@@ -109,6 +123,7 @@ String id;
     var mediaQuery = MediaQuery.of(context).size;
     return showBottomSheet(
         context: context,
+        elevation: 0.0,
         backgroundColor: Colors.transparent,//Colors.transparent,
         builder: (context){
           return Padding(
@@ -117,13 +132,14 @@ String id;
               height: mediaQuery.height/12.0,
               width: mediaQuery.width,
               decoration: BoxDecoration(
-             color: Colors.white,//Color(0xcc262626),
-            borderRadius: BorderRadius.circular(28.0),
+             color: Colors.transparent,//Color(0xcc262626),
+             borderRadius: BorderRadius.circular(28.0),
+             //border: Border.all(color: Color(0x90989dac), width: 0.4),
                 boxShadow: [
                   BoxShadow(
-                    color: Color(0xffeef0f8),
-                    blurRadius: 4.0,
-                    spreadRadius: 1.0,
+                    color: Colors.transparent,
+                    // blurRadius: 4.0,
+                    // spreadRadius: 1.0,
                     // offset: Offset(-1, 1)
                   )
                 ]
@@ -140,34 +156,15 @@ String id;
                         Navigator.pop(context);
                       },
                     ),
-                    MaterialButton(
-                      elevation: 0.0,
-                      shape: CircleBorder(),
-                      child: Icon(
+                    IconButton(
+                      icon: Icon(
                         CustomIconsSet.recycling_bin,
                         color: Colors.red,
                       ),
-                      color: Colors.red[50],
-                      splashColor: Colors.red[300],
-                      highlightColor: Colors.red[300],
                       onPressed: (){
                         showDeleteAlert(context);
                       },
                     ),
-                    // IconButton(
-                    //   icon: Icon(Icons.clear, color: Colors.white,),
-                    //   onPressed: (){
-                    //     messages.clear();
-                    //     Navigator.pop(context);
-                    //   },
-                    // ),
-                   // Text('${messages.length}', style: TextStyle(color: Colors.greenAccent, fontSize: 18.0),),
-                   //  IconButton(
-                   //    icon: Icon(Icons.delete_outline, color: Colors.white,),
-                   //    onPressed: (){
-                   //      showDeleteAlert(context);
-                   //    },
-                   //  )
                   ],
                 ),
               ),
