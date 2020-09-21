@@ -43,15 +43,15 @@ class MessageBubble extends StatelessWidget {
                           ConstrainedBox(
                             constraints: BoxConstraints(
                               maxWidth: MediaQuery.of(context).size.width/1.25,
-                              // minWidth: MediaQuery.of(context).size.width/8.0,
+                               minWidth: MediaQuery.of(context).size.width/8.0,
                             ),
                             child: Container(
                               //  elevation: 0.2,
                               // color: isMe ? Colors.grey[100] : Color(0x253366ff) ,//Color(0xffe6ecff)
                               //shadowColor: Color(0xfff4f4f7),
                               decoration: BoxDecoration(
-                                color: isMe ? Colors.white : Color(0x253366ff),
-                                border: isMe ? Border.all(color: Color(0x90989dac), width: 0.6) : null,
+                                color: isMe ? Color(0xff37c882) : Colors.white,
+                                border: isMe ? null : Border.all(color: Color(0x90989dac), width: 0.6),
                                 borderRadius: BorderRadius.only(
                                   topLeft: isMe ? Radius.circular(8.0) : Radius.circular(0.0),
                                   topRight: Radius.circular(8.0),
@@ -71,8 +71,9 @@ class MessageBubble extends StatelessWidget {
                                 child:  Text(
                                   text,
                                   style: TextStyle(
-                                      fontSize: 15.0,
-                                      color: isMe ?  Color(0xff070707) : Colors.blue,
+                                      fontSize: 12.0,
+                                      fontFamily: 'Poppins',
+                                      color: isMe ? Colors.white : Color(0xff070707) ,//Color(0xff36ae5b)
                                       fontWeight: FontWeight.w400
                                   ),
                                 ),
