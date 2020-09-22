@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:test_app/screens/chat_screen.dart';
+import 'file:///C:/Users/uday%20G/AndroidStudioProjects/test_app/lib/screens/chat_screen/chat_screen.dart';
 import 'package:test_app/screens/registration_screen/verification_screen.dart';
 import 'package:test_app/components/custom_alert_dialog.dart';
 
@@ -38,10 +38,9 @@ class Service{
           },
 
           verificationFailed: (AuthException exception) {
-            print('failed');
             print(exception.code);
             if(exception.code == 'quotaExceeded'){
-              showAlert(context: context, alert: 'OOPS!', description: 'Too much attempts.Try again later.', );
+              showAlert(context: context, alert: 'OOPS!', description: 'Too much attempts.Try again later.', defaultButtonName: 'OK' );
             }
           },
 
@@ -60,13 +59,13 @@ class Service{
   void showExceptionAsAlert(BuildContext context, PlatformException platformException){
     switch(platformException.code){
       case 'ERROR_INVALID_VERIFICATION_CODE':
-        showAlert(context: context, alert: 'Invalid Code', description: 'This is not the code that we sent to you.');
+        showAlert(context: context, alert: 'Invalid Code', description: 'This is not the code that we sent to you.', defaultButtonName: 'OK');
         break;
       case 'ERROR_SESSION_EXPIRED':
-        showAlert(context: context, alert: 'Expired', description: 'This code has expired.Try again.');
+        showAlert(context: context, alert: 'Expired', description: 'This code has expired.Try again.', defaultButtonName: 'OK');
         break;
       default:
-        showAlert(context: context, alert: 'OOPS!', description: 'Something went wrong.');
+        showAlert(context: context, alert: 'OOPS!', description: 'Something went wrong.', defaultButtonName: 'OK');
 
     }
   }

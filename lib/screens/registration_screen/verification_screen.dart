@@ -149,7 +149,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       color: Color(0xff263238),
                       child: Text('Verify', style: TextStyle(color: Colors.white),),
                       onPressed: (){
-                        otpFieldController.text == null || otpFieldController.text == '' ? showAlert(context: context, alert: 'Uh oh!', description: 'Please enter the OTP') :
+                        otpFieldController.text == null || otpFieldController.text == '' ? showAlert(context: context, alert: 'Uh oh!', description: 'Please enter the OTP', defaultButtonName: 'OK') :
                       Service().signIn(context, otpFieldController.text, widget.verificationId);
                       },
                     ),

@@ -191,7 +191,7 @@ class _PhoneAuthenticationState extends State<PhoneAuthentication> {
                         child: Icon(Icons.chevron_right, color: Colors.white,),
                         onPressed: (){
                           try{
-                            phoneNo.length == 0 || phoneNo.length < 10 ? showAlert(context: context, alert: 'OOPS!', description: 'Please enter a valid phone number') : dialCode.length == 0 ? showAlert(context: context, alert: 'Sorry', description: 'Please select your country') : Service().verifyPhoneNumber(context, dialCode, phoneNo, PhoneAuthentication.id);
+                            phoneNo.length == 0 || phoneNo.length < 10 ? showAlert(context: context, alert: 'OOPS!', description: 'Please enter a valid phone number', defaultButtonName: 'OK') : dialCode.length == 0 ? showAlert(context: context, alert: 'Sorry', description: 'Please select your country', defaultButtonName: 'OK') : Service().verifyPhoneNumber(context, dialCode, phoneNo, PhoneAuthentication.id);
                           }catch(e){
                             print(e);
                           }
