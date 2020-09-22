@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:test_app/components/custom_alert_dialog.dart';
@@ -46,6 +47,9 @@ class CustomAppBar extends ChangeNotifier{
     messages.add(messageId);
    }
 
+   void copyText(String text){
+    Clipboard.setData(new ClipboardData(text: text));
+   }
 
  Widget defaultAppBar() {
     return Padding(
@@ -72,97 +76,133 @@ class CustomAppBar extends ChangeNotifier{
     );
  }
 
-  void showDeleteAlert(context) {
+//   void showDeleteAlert(context) {
+//
+//     String text = messages.length > 1 ? 'messages' : 'message';
+//
+//     showDialog(
+//       context: context,
+//       builder: (BuildContext context){
+//         return AlertDialog(
+//           title: Text('Delete ${messages.length} $text'),
+//           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3.0)),
+//           content: Row(
+//             children: <Widget>[
+//               Icon(Icons.check_box,color: Colors.blue,),
+//               SizedBox(width: 5.0,),
+//               Text('delete chats or media?'),
+//             ],
+//           ),
+//           actions: <Widget>[
+//             FlatButton(
+//               child: Text('CANCEL'),
+//               onPressed: (){
+//                 Navigator.pop(context);
+//                 messages.clear();
+//                 //changeAppBar();
+//                 Navigator.pop(context);
+//               },
+//             ),
+//             FlatButton(
+//               child: Text('DELETE'),
+//               onPressed: (){
+//                 Navigator.pop(context);
+//                 for(int i = 0; i<messages.length; i++){
+//                   _firestore.collection('message').document(messages.elementAt(i)).delete();
+//                 }
+//                 messages.clear();
+//                 Navigator.pop(context);
+// //                changeAppBar();
+//               },
+//             )
+//           ],
+//         );
+//       }
+//     );
+//
+//   }
 
-    String text = messages.length > 1 ? 'messages' : 'message';
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context){
-        return AlertDialog(
-          title: Text('Delete ${messages.length} $text'),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3.0)),
-          content: Row(
-            children: <Widget>[
-              Icon(Icons.check_box,color: Colors.blue,),
-              SizedBox(width: 5.0,),
-              Text('delete chats or media?'),
-            ],
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('CANCEL'),
-              onPressed: (){
-                Navigator.pop(context);
-                messages.clear();
-                //changeAppBar();
-                Navigator.pop(context);
-              },
-            ),
-            FlatButton(
-              child: Text('DELETE'),
-              onPressed: (){
-                Navigator.pop(context);
-                for(int i = 0; i<messages.length; i++){
-                  _firestore.collection('message').document(messages.elementAt(i)).delete();
-                }
-                messages.clear();
-                Navigator.pop(context);
-//                changeAppBar();
-              },
-            )
-          ],
-        );
-      }
-    );
-
-  }
-
-
-  PersistentBottomSheetController messageOptions(BuildContext context){
+  PersistentBottomSheetController messageOptions({BuildContext context, String message}){
     var mediaQuery = MediaQuery.of(context).size;
     return showBottomSheet(
         context: context,
         elevation: 0.0,
-        backgroundColor: Colors.transparent,//Colors.transparent,
+        backgroundColor: Colors.white,//Colors.transparent,
         builder: (context){
           return Padding(
-            padding: const EdgeInsets.only(bottom: 65.0,left: 65.0, right: 65.0),
+            padding: const EdgeInsets.only(bottom: 10.0,left: 10.0, right: 10.0),
             child: Container(
-              height: mediaQuery.height/12.0,
+              height: mediaQuery.height/11.0,
               width: mediaQuery.width,
               decoration: BoxDecoration(
-             color: Colors.transparent,//Color(0xcc262626),
-             borderRadius: BorderRadius.circular(28.0),
-             //border: Border.all(color: Color(0x90989dac), width: 0.4),
+             color: Colors.white,
+             borderRadius: BorderRadius.circular(14.0),
+             border: Border.all(color: Color(0x90989dac), width: 0.15),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.transparent,
-                    // blurRadius: 4.0,
-                    // spreadRadius: 1.0,
-                    // offset: Offset(-1, 1)
+                    color: Color(0x10263238),
+                     blurRadius: 18.0,
+                     spreadRadius: 1.0,
                   )
                 ]
               ),
               child: Padding(
-                padding: const EdgeInsets.only(left: 4.0),
+                padding: const EdgeInsets.only(left: 4.0, top: 4.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     IconButton(
-                      icon: Icon(Icons.clear, color: Colors.black,),
+                      icon: Icon(Icons.clear, color: Color(0xff262626), size: 20.0,),
                       onPressed: (){
                         messages.clear();
                         Navigator.pop(context);
                       },
                     ),
-                    IconButton(
-                      icon: Icon(
-                        CustomIconsSet.recycling_bin,
-                        color: Colors.red,
-                      ),
+                    MaterialButton(
+                      elevation: 0.0,
+                      color: Color(0xffffebe6),
+                      shape: CircleBorder(),
+                      height: 42.0,
+                      child: Icon(CustomIconsSet.share_social_interface_button, color: Colors.deepOrange, size: 20.0,),
                       onPressed: (){
-                        showDeleteAlert(context);
+
+                      },
+                    ),
+                    MaterialButton(
+                      elevation: 0.0,
+                      color: Color(0xffe6e6ff),
+                      shape: CircleBorder(),
+                      height: 42.0,
+                      child: Icon(CustomIconsSet.copy_two_paper_sheets_interface_symbol, color: Color(0xff0a05ff), size: 22.0,),
+                      onPressed: (){
+                       copyText(message);
+                       print('copied');
+                       Navigator.pop(context);
+                      },
+                    ),
+                    MaterialButton(
+                      elevation: 0.0,
+                       color: Color(0xfff0f1f4),
+                       shape: CircleBorder(),
+                       height: 42.0,
+                       child: Icon(CustomIconsSet.recycling_bin, color: Color(0xff57607a), size: 22.0,),
+                      onPressed: (){
+                        String text = messages.length > 1 ? 'messages' : 'message';
+
+                        showAlert(context: context,alert: 'Complete Action?', description: 'Delete ${messages.length} $text',
+                        defaultButtonName: 'Cancel',
+                        optionalButtonName: 'Delete',
+                          optionalButtonColor: Color(0xffe65e5e),
+                          onPressOptionalButton: (){
+                              Navigator.pop(context);
+                              for(int i = 0; i<messages.length; i++){
+                                _firestore.collection('message').document(messages.elementAt(i)).delete();
+                              }
+                              messages.clear();
+                              Navigator.pop(context);
+                          }
+                        );
                       },
                     ),
                   ],
