@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'file:///C:/Users/uday%20G/AndroidStudioProjects/test_app/lib/screens/chat_screen/chat_screen.dart';
+import 'package:test_app/screens/chat_screen/chat_screen.dart';
 import 'package:test_app/screens/registration_screen/verification_screen.dart';
 import 'package:test_app/components/custom_alert_dialog.dart';
 
