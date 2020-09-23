@@ -10,7 +10,6 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:test_app/components/custom_alert_dialog.dart';
 import 'package:test_app/custom_icons_set_icons.dart';
-import 'package:test_app/screens/chat_screen_components.dart';
 
 final Firestore _firestore = Firestore.instance;
 
@@ -32,16 +31,6 @@ class CustomAppBar extends ChangeNotifier{
   void setCurrentUser(FirebaseUser firebaseUser){
     _user = firebaseUser;
   }
- // bool _change = false;
-
-//  Widget appBar(){
-//    return _change ? chatOptionAppBar() : defaultAppBar();
-//  }
-//
-//   void changeAppBar(){
-//    _change = !_change;
-//    notifyListeners();
-//   }
 
    void selectedMessages(String messageId){
     messages.add(messageId);
@@ -51,30 +40,6 @@ class CustomAppBar extends ChangeNotifier{
     Clipboard.setData(new ClipboardData(text: text));
    }
 
- Widget defaultAppBar() {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: AppBar(
-        leading: IconButton(icon: Icon(Icons.chevron_left, size: 30.0,), color: Colors.white, onPressed: ()=> Navigator.pop(context),),
-        backgroundColor: Color(0xff263238),
-//      elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0), bottomLeft: Radius.circular(15.0), bottomRight: Radius.circular(15.0)),
-        ),
-        iconTheme: IconThemeData(
-            color: Colors.white
-        ),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.search),
-              color: Colors.white,
-              iconSize: 25.0,
-              onPressed: () {
-
-              }),
-        ],),
-    );
- }
 
 //   void showDeleteAlert(context) {
 //
