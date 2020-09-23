@@ -16,7 +16,7 @@ class UserRegistrationStatus{
       return File('$_statusFilePath/TextMe.txt');
     }
     else{
-      File('$path/TextMe.txt').writeAsString('false');
+      File('$_path/TextMe.txt').writeAsString('false');
       return File('$_statusFilePath/TextMe.txt');
     }
   }
