@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_app/provider/custom_appbar.dart';
-import 'package:test_app/screens/show_media_screen.dart';
+import 'package:test_app/provider/provider_class.dart';
+import 'package:test_app/screens/share_media_screens/show_media_screen.dart';
 import 'package:test_app/services/date_and_time.dart';
 
 class MessageBubble extends StatelessWidget {
@@ -32,7 +32,7 @@ class MessageBubble extends StatelessWidget {
                        // isPressed = true;
                         Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
                         // Provider.of<CustomAppBar>(context,listen: false).changeAppBar();
-                        Provider.of<CustomAppBar>(context, listen: false).messageOptions(context);
+                        Provider.of<CustomAppBar>(context, listen: false).messageOptions(context: context, message: text);
                       },
                       onTap: (){
                         // longPressed ? Provider.of<CustomAppBar>(context,listen: false).changeAppBar() : null;
@@ -96,28 +96,42 @@ class MessageBubble extends StatelessWidget {
                                 mediaLink: mediaUrl,
                               )));
                         },
-                        child: Material(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          borderOnForeground: true,
-                          shadowColor: Color(0xffDCDCE5),
-                          elevation: 3.0,
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: 250.0,
+                            maxWidth: 220.0,
+                            minHeight: 250.0,
+                            minWidth: 220.0,
+                          ),
+                          child: Material(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderOnForeground: true,
+                            shadowColor: Color(0xffDCDCE5),
+                            elevation: 3.0,
 
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: Image.network(
-                              mediaUrl,
-                              fit: BoxFit.fill,
-                              width: 220.0,
-                              height: 250.0,
-                              loadingBuilder: (context,child,loadingProgress){
-                                if(loadingProgress == null) return child;
-                                return CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes != null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes
-                                      : null,
-                                );
-                              },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.network(
+                                mediaUrl,
+                                fit: BoxFit.fill,
+                                width: 220.0,
+                                height: 250.0,
+                                loadingBuilder: (context,child,loadingProgress){
+                                  if(loadingProgress == null) return child;
+                                  return Center(
+                                    child: SizedBox(
+                                      height: 30.0,
+                                      width: 30.0,
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress.expectedTotalBytes != null
+                                            ? loadingProgress.cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes
+                                            : null,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ),
@@ -151,27 +165,40 @@ class MessageBubble extends StatelessWidget {
                      // isPressed = true;
                       Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
                       // Provider.of<CustomAppBar>(context,listen: false).changeAppBar();
-                      Provider.of<CustomAppBar>(context, listen: false).messageOptions(context);
+                      Provider.of<CustomAppBar>(context, listen: false).messageOptions(context: context, message: text);
                     },
                     onTap: (){
                       // longPressed ? Provider.of<CustomAppBar>(context,listen: false).changeAppBar() : null;
                       Provider.of<CustomAppBar>(context,listen: false).selectedMessages(id);
                     },
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                        child: Text(
-                          text,
-                          style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w500,
-                              color: isMe ?  Colors.black54 : Colors.blue
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width/1.25,
+                        minWidth: MediaQuery.of(context).size.width/8.0,
+                      ),
+                      child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                          child: Text(
+                            text,
+                            style: TextStyle(
+                                fontSize: 12.0,
+                                fontFamily: 'Poppins',
+                                color: isMe ? Colors.white : Color(0xff070707) ,//Color(0xff36ae5b)
+                                fontWeight: FontWeight.w400
+                            ),
                           ),
                         ),
-                      ),
-                      decoration: BoxDecoration(
-                        color: isMe ? Colors.grey[100] : Color(0x253366ff),
-                        borderRadius: BorderRadius.circular(6.0),
+                        decoration: BoxDecoration(
+                            color: isMe ? Color(0xff37c882) : Colors.white,
+                            border: isMe ? null : Border.all(color: Color(0x90989dac), width: 0.6),
+                            borderRadius: BorderRadius.only(
+                              topLeft: isMe ? Radius.circular(8.0) : Radius.circular(0.0),
+                              topRight: Radius.circular(8.0),
+                              bottomLeft: Radius.circular(8.0),
+                              bottomRight: isMe ? Radius.circular(0.0) : Radius.circular(8.0),
+                            )
+                        ),
                       ),
                     ),
                   ): Container(),
