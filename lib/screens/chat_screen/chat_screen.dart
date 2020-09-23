@@ -5,8 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:test_app/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:test_app/provider/custom_appbar.dart';
-import 'package:test_app/screens/share_media_screen.dart';
+import 'package:test_app/provider/provider_class.dart';
+import 'package:test_app/screens/chat_screen/chat_screen_appBar.dart';
+import 'package:test_app/screens/share_media_screens/share_media_screen.dart';
 import 'dart:ui';
 
 import 'chat_builder.dart';
@@ -170,7 +171,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 top: -2.0,
                 left: 0.0,
                 right: 0.0,
-                child: Provider.of<CustomAppBar>(context).defaultAppBar()
+                child: appBar(context: context)//Provider.of<CustomAppBar>(context).defaultAppBar()
             )
           ],
         ),
