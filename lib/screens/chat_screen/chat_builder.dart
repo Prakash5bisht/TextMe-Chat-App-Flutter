@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_app/provider/custom_appbar.dart';
+import 'package:test_app/provider/provider_class.dart';
 import 'package:test_app/screens/chat_screen/message_bubble.dart';
 
 class ChatBuilder extends StatelessWidget {
