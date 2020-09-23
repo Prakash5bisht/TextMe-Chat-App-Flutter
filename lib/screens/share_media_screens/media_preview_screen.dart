@@ -11,8 +11,8 @@ import 'package:photo_view/photo_view.dart';
 import 'package:test_app/constants.dart';
 //import 'package:video_player/video_player.dart';
 import 'package:provider/provider.dart';
-import 'package:test_app/models/custom_appbar.dart';
 import 'package:path/path.dart' as Path;
+import 'package:test_app/provider/provider_class.dart';
 
 
 var message = '';

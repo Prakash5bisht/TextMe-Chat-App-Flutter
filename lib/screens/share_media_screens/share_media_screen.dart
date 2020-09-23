@@ -5,12 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:test_app/constants.dart';
 import 'package:test_app/custom_icons_set_icons.dart';
-import 'package:test_app/screens/chat_screen_components.dart';
-//import 'package:test_app/models/custom_appbar.dart';
-import 'package:test_app/screens/media_preview_screen.dart';
-
-import 'registration_screen/phone_auth_screen.dart';
-
+import 'package:test_app/screens/registration_screen/phone_auth_screen.dart';
+import 'package:test_app/screens/share_media_screens/reusable_media_button.dart';
+import 'package:test_app/screens/share_media_screens/media_preview_screen.dart';
 class ShareMediaScreen extends StatefulWidget {
 
   @override
@@ -38,7 +35,7 @@ class _ShareMediaScreenState extends State<ShareMediaScreen> {
             // File file = await _statusFile;
             // file.delete();
             // print('done');
-            //Navigator.pushNamed(context, PhoneAuthentication.id);
+           // Navigator.pushNamed(context, PhoneAuthentication.id);
             showModalBottomSheet(
               backgroundColor: Colors.transparent,
                 context: context,
@@ -106,7 +103,7 @@ class _ShareMediaScreenState extends State<ShareMediaScreen> {
                                     iconColor: Color(0xff009772),
                                     function: (){
                                       try{
-                                       // getMedia(context,ImageSource.gallery);
+                                        getMedia(context,ImageSource.gallery);
                                       }catch(e){
                                         print(e);
                                       }
