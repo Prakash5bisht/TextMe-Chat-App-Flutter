@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:test_app/models/custom_appbar.dart';
-import 'package:test_app/screens/country_picker_screen.dart';
-import 'package:test_app/screens/phone_auth_screen.dart';
+import 'package:test_app/provider/provider_class.dart';
+import 'package:test_app/screens/chat_screen/chat_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:test_app/screens/registration_screen/phone_auth_screen.dart';
 import 'package:test_app/screens/welcome_screen.dart';
 import 'package:test_app/screens/login_screen.dart';
 import 'package:test_app/screens/registration_screen.dart';
-import 'package:test_app/screens/chat_screen.dart';
 import 'screens/launch_screen.dart';
+import 'screens/registration_screen/country_picker_screen.dart';
 import 'services/user_registration_status.dart';
 
 void main() async{
@@ -29,7 +29,7 @@ class TextMe extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context)=> CustomAppBar(),
       child: MaterialApp(
-        initialRoute: myState == true ? ChatScreen.id : RegistrationScreen.id,
+         initialRoute: WelcomeScreen.id,//myState == true ? ChatScreen.id : RegistrationScreen.id,
         routes: {
           LaunchScreen.id: (context)=> LaunchScreen(),
           WelcomeScreen.id: (context)=> WelcomeScreen(),
