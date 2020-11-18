@@ -2,11 +2,12 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:test_app/constants.dart';
-import 'package:test_app/screens/chat_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/components/round_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'chat_screen/chat_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';

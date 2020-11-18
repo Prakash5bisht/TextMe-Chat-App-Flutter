@@ -29,7 +29,7 @@ class TextMe extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context)=> CustomAppBar(),
       child: MaterialApp(
-         initialRoute: WelcomeScreen.id,//myState == true ? ChatScreen.id : RegistrationScreen.id,
+         initialRoute: myState == true ? ChatScreen.id : RegistrationScreen.id, //WelcomeScreen.id
         routes: {
           LaunchScreen.id: (context)=> LaunchScreen(),
           WelcomeScreen.id: (context)=> WelcomeScreen(),

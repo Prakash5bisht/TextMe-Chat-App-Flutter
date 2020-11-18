@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:test_app/constants.dart';
-import 'package:test_app/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/components/round_button.dart';
+
+import 'chat_screen/chat_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id  = 'login_screen';

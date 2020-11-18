@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
-import 'chat_screen.dart';
+import 'chat_screen/chat_screen.dart';
 import 'welcome_screen.dart';
 import 'dart:io';
 

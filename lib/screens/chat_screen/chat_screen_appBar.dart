@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Widget appBar({BuildContext context}) {
@@ -6,9 +7,9 @@ Widget appBar({BuildContext context}) {
     child: AppBar(
       leading: IconButton(icon: Icon(Icons.chevron_left, size: 30.0,), color: Colors.white, onPressed: ()=> Navigator.pop(context),),
       backgroundColor: Color(0xff263238),
-//      elevation: 0,
+      //elevation: 5.0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0), bottomLeft: Radius.circular(15.0), bottomRight: Radius.circular(15.0)),
+        borderRadius: BorderRadius.all(Radius.circular(28.0)),
       ),
       iconTheme: IconThemeData(
           color: Colors.white
